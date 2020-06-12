@@ -10,6 +10,17 @@
 		8DA87A4A249257C000148865 /* AutocompleteText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA87A40249257C000148865 /* AutocompleteText.framework */; };
 		8DA87A4F249257C000148865 /* AutocompleteTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A4E249257C000148865 /* AutocompleteTextTests.swift */; };
 		8DA87A51249257C000148865 /* AutocompleteText.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DA87A43249257C000148865 /* AutocompleteText.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8DA87A61249257F800148865 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A60249257F800148865 /* AppDelegate.swift */; };
+		8DA87A63249257F800148865 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A62249257F800148865 /* SceneDelegate.swift */; };
+		8DA87A65249257F800148865 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A64249257F800148865 /* ViewController.swift */; };
+		8DA87A68249257F800148865 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DA87A66249257F800148865 /* Main.storyboard */; };
+		8DA87A6A249257F900148865 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DA87A69249257F900148865 /* Assets.xcassets */; };
+		8DA87A6D249257F900148865 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DA87A6B249257F900148865 /* LaunchScreen.storyboard */; };
+		8DA87A812492581200148865 /* AutocompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A802492581200148865 /* AutocompleteView.swift */; };
+		8DA87A832492594200148865 /* AutocompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A822492594200148865 /* AutocompleteRowView.swift */; };
+		8DA87A8924928A4200148865 /* Autocompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A8824928A4200148865 /* Autocompletable.swift */; };
+		8DC6864D2493658C00D1350B /* AutocompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A862492856100148865 /* AutocompleteTextField.swift */; };
+		8DC6864F2493661800D1350B /* AutocompleteText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA87A40249257C000148865 /* AutocompleteText.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +40,18 @@
 		8DA87A49249257C000148865 /* AutocompleteTextTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AutocompleteTextTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DA87A4E249257C000148865 /* AutocompleteTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteTextTests.swift; sourceTree = "<group>"; };
 		8DA87A50249257C000148865 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DA87A5E249257F800148865 /* AutocompleteTextExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutocompleteTextExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DA87A60249257F800148865 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8DA87A62249257F800148865 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8DA87A64249257F800148865 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8DA87A67249257F800148865 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8DA87A69249257F900148865 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8DA87A6C249257F900148865 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8DA87A6E249257F900148865 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DA87A802492581200148865 /* AutocompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteView.swift; sourceTree = "<group>"; };
+		8DA87A822492594200148865 /* AutocompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteRowView.swift; sourceTree = "<group>"; };
+		8DA87A862492856100148865 /* AutocompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteTextField.swift; sourceTree = "<group>"; };
+		8DA87A8824928A4200148865 /* Autocompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autocompletable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +70,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8DA87A5B249257F800148865 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC6864F2493661800D1350B /* AutocompleteText.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -55,7 +86,9 @@
 			children = (
 				8DA87A42249257C000148865 /* AutocompleteText */,
 				8DA87A4D249257C000148865 /* AutocompleteTextTests */,
+				8DA87A5F249257F800148865 /* AutocompleteTextExamples */,
 				8DA87A41249257C000148865 /* Products */,
+				8DC6864E2493661800D1350B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +97,7 @@
 			children = (
 				8DA87A40249257C000148865 /* AutocompleteText.framework */,
 				8DA87A49249257C000148865 /* AutocompleteTextTests.xctest */,
+				8DA87A5E249257F800148865 /* AutocompleteTextExamples.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,6 +107,10 @@
 			children = (
 				8DA87A43249257C000148865 /* AutocompleteText.h */,
 				8DA87A44249257C000148865 /* Info.plist */,
+				8DA87A802492581200148865 /* AutocompleteView.swift */,
+				8DA87A822492594200148865 /* AutocompleteRowView.swift */,
+				8DA87A862492856100148865 /* AutocompleteTextField.swift */,
+				8DA87A8824928A4200148865 /* Autocompletable.swift */,
 			);
 			path = AutocompleteText;
 			sourceTree = "<group>";
@@ -84,6 +122,27 @@
 				8DA87A50249257C000148865 /* Info.plist */,
 			);
 			path = AutocompleteTextTests;
+			sourceTree = "<group>";
+		};
+		8DA87A5F249257F800148865 /* AutocompleteTextExamples */ = {
+			isa = PBXGroup;
+			children = (
+				8DA87A60249257F800148865 /* AppDelegate.swift */,
+				8DA87A62249257F800148865 /* SceneDelegate.swift */,
+				8DA87A64249257F800148865 /* ViewController.swift */,
+				8DA87A66249257F800148865 /* Main.storyboard */,
+				8DA87A69249257F900148865 /* Assets.xcassets */,
+				8DA87A6B249257F900148865 /* LaunchScreen.storyboard */,
+				8DA87A6E249257F900148865 /* Info.plist */,
+			);
+			path = AutocompleteTextExamples;
+			sourceTree = "<group>";
+		};
+		8DC6864E2493661800D1350B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +195,23 @@
 			productReference = 8DA87A49249257C000148865 /* AutocompleteTextTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		8DA87A5D249257F800148865 /* AutocompleteTextExamples */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DA87A7A249257FA00148865 /* Build configuration list for PBXNativeTarget "AutocompleteTextExamples" */;
+			buildPhases = (
+				8DA87A5A249257F800148865 /* Sources */,
+				8DA87A5B249257F800148865 /* Frameworks */,
+				8DA87A5C249257F800148865 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AutocompleteTextExamples;
+			productName = AutocompleteTextExamples;
+			productReference = 8DA87A5E249257F800148865 /* AutocompleteTextExamples.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -148,8 +224,12 @@
 				TargetAttributes = {
 					8DA87A3F249257C000148865 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					8DA87A48249257C000148865 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					8DA87A5D249257F800148865 = {
 						CreatedOnToolsVersion = 11.3.1;
 					};
 				};
@@ -169,6 +249,7 @@
 			targets = (
 				8DA87A3F249257C000148865 /* AutocompleteText */,
 				8DA87A48249257C000148865 /* AutocompleteTextTests */,
+				8DA87A5D249257F800148865 /* AutocompleteTextExamples */,
 			);
 		};
 /* End PBXProject section */
@@ -188,6 +269,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8DA87A5C249257F800148865 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DA87A6D249257F900148865 /* LaunchScreen.storyboard in Resources */,
+				8DA87A6A249257F900148865 /* Assets.xcassets in Resources */,
+				8DA87A68249257F800148865 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -195,6 +286,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DC6864D2493658C00D1350B /* AutocompleteTextField.swift in Sources */,
+				8DA87A8924928A4200148865 /* Autocompletable.swift in Sources */,
+				8DA87A832492594200148865 /* AutocompleteRowView.swift in Sources */,
+				8DA87A812492581200148865 /* AutocompleteView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +298,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DA87A4F249257C000148865 /* AutocompleteTextTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DA87A5A249257F800148865 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DA87A65249257F800148865 /* ViewController.swift in Sources */,
+				8DA87A61249257F800148865 /* AppDelegate.swift in Sources */,
+				8DA87A63249257F800148865 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +320,25 @@
 			targetProxy = 8DA87A4B249257C000148865 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8DA87A66249257F800148865 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8DA87A67249257F800148865 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8DA87A6B249257F900148865 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8DA87A6C249257F900148865 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		8DA87A52249257C000148865 /* Debug */ = {
@@ -340,6 +464,7 @@
 		8DA87A55249257C000148865 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UYXPW2Z6TM;
@@ -356,6 +481,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Federico-Arvat.AutocompleteText";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -364,6 +491,7 @@
 		8DA87A56249257C000148865 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UYXPW2Z6TM;
@@ -380,6 +508,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Federico-Arvat.AutocompleteText";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -388,6 +517,7 @@
 		8DA87A58249257C000148865 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UYXPW2Z6TM;
 				INFOPLIST_FILE = AutocompleteTextTests/Info.plist;
@@ -406,6 +536,7 @@
 		8DA87A59249257C000148865 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UYXPW2Z6TM;
 				INFOPLIST_FILE = AutocompleteTextTests/Info.plist;
@@ -415,6 +546,44 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Federico-Arvat.AutocompleteTextTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8DA87A7B249257FA00148865 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UYXPW2Z6TM;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				INFOPLIST_FILE = AutocompleteTextExamples/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Federico-Arvat.AutocompleteTextExamples";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8DA87A7C249257FA00148865 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UYXPW2Z6TM;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				INFOPLIST_FILE = AutocompleteTextExamples/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Federico-Arvat.AutocompleteTextExamples";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -447,6 +616,15 @@
 			buildConfigurations = (
 				8DA87A58249257C000148865 /* Debug */,
 				8DA87A59249257C000148865 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DA87A7A249257FA00148865 /* Build configuration list for PBXNativeTarget "AutocompleteTextExamples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DA87A7B249257FA00148865 /* Debug */,
+				8DA87A7C249257FA00148865 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
