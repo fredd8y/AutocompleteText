@@ -41,4 +41,5 @@ extension String {
         
         return matrix[selfCount][otherCount]
     }
+	
 }

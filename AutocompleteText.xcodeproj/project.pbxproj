@@ -23,6 +23,8 @@
 		8DC686512493A77A00D1350B /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC686502493A77A00D1350B /* UIApplication.swift */; };
 		8DC686532493B58C00D1350B /* AutocompleteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC686522493B58C00D1350B /* AutocompleteController.swift */; };
 		8DC6865B249A5B8900D1350B /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6865A249A5B8900D1350B /* String.swift */; };
+		8DC6865D249AB5A400D1350B /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6865C249AB5A400D1350B /* SeparatorView.swift */; };
+		8DC68660249ABAA900D1350B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6865E249ABA2100D1350B /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,8 @@
 		8DC686502493A77A00D1350B /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		8DC686522493B58C00D1350B /* AutocompleteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
 		8DC6865A249A5B8900D1350B /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		8DC6865C249AB5A400D1350B /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		8DC6865E249ABA2100D1350B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +121,7 @@
 				8DC686502493A77A00D1350B /* UIApplication.swift */,
 				8DC686522493B58C00D1350B /* AutocompleteController.swift */,
 				8DC6865A249A5B8900D1350B /* String.swift */,
+				8DC6865C249AB5A400D1350B /* SeparatorView.swift */,
 			);
 			path = AutocompleteText;
 			sourceTree = "<group>";
@@ -133,6 +138,7 @@
 		8DA87A5F249257F800148865 /* AutocompleteTextExamples */ = {
 			isa = PBXGroup;
 			children = (
+				8DC6865E249ABA2100D1350B /* Utils.swift */,
 				8DA87A60249257F800148865 /* AppDelegate.swift */,
 				8DA87A62249257F800148865 /* SceneDelegate.swift */,
 				8DA87A64249257F800148865 /* ViewController.swift */,
@@ -295,6 +301,7 @@
 				8DC6865B249A5B8900D1350B /* String.swift in Sources */,
 				8DC686512493A77A00D1350B /* UIApplication.swift in Sources */,
 				8DC686532493B58C00D1350B /* AutocompleteController.swift in Sources */,
+				8DC6865D249AB5A400D1350B /* SeparatorView.swift in Sources */,
 				8DC6864D2493658C00D1350B /* AutocompleteTextField.swift in Sources */,
 				8DA87A8924928A4200148865 /* Autocompletable.swift in Sources */,
 				8DA87A832492594200148865 /* AutocompleteRowView.swift in Sources */,
@@ -316,6 +323,7 @@
 				8DA87A65249257F800148865 /* ViewController.swift in Sources */,
 				8DA87A61249257F800148865 /* AppDelegate.swift in Sources */,
 				8DA87A63249257F800148865 /* SceneDelegate.swift in Sources */,
+				8DC68660249ABAA900D1350B /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

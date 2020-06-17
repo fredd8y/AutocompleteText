@@ -20,13 +20,11 @@ class ViewController: UIViewController {
 		autocompleteController = AutocompleteController(autocompleteTextField: autocompleteTextField)
 		guard let _autocompleteController = self.autocompleteController else { return }
 		_autocompleteController.delegate = self
-		_autocompleteController.values = ["ciao", "come", "stai"]
+		_autocompleteController.values = (0..<100).map({ _ in
+			return Utils.randomString(range: 4..<10)
+		})
 		_autocompleteController.minimumAmountOfCharacter = 0
-		_autocompleteController.borderWidth = 1
-		_autocompleteController.borderColor = UIColor.black
-		_autocompleteController.backgroundColor = UIColor.red
 	}
-
 
 }
 

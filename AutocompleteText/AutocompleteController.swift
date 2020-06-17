@@ -42,10 +42,18 @@ public class AutocompleteController {
 	public var maximumLevenshteinDistance: Int = 0
 	
 	/// List of words that can be shown
-	public var values: [String] = []
+	public var values: [String] = [] {
+		didSet { values.sort() }
+	}
 	
 	/// Width of the list container border
 	public var borderWidth: CGFloat = 1.0
+	
+	/// Width of the rows separator
+	public var rowSeparatorHeight: CGFloat = 1.0
+	
+	/// Color of the rows separator
+	public var rowSeparatorColor: UIColor = UIColor.gray
 	
 	/// Border color of the list container
 	public var borderColor: UIColor = UIColor.gray
@@ -87,11 +95,20 @@ extension AutocompleteController {
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		
-		rowViews = getRowViews(fromValues: Array(values.prefix(maximumAmountOfDisplayableRows)))
-		setContainerLayout(containerView, borderWidth: borderWidth, borderColor: borderColor)
-		containerView.frame = getFrameBasedOnTextField(autocompleteTextField, andRowViews: rowViews)
-		containerView.addSubview(createStackWithRowViews(rowViews, thatFit: containerView))
-		autocompleteTextField.superview?.addSubview(containerView)
+		let filteredValues = values.filter({ currentItem in
+			String(currentItem.prefix(textValue.count)).levenshtein(textValue) <= maximumLevenshteinDistance
+		})
+		
+		let rowViews = getRowViews(fromValues: Array(filteredValues.prefix(maximumAmountOfDisplayableRows)))
+		resizeContainer(
+			containerView,
+			under: autocompleteTextField,
+			withBorderWidth: borderWidth,
+			andBorderColor: borderColor,
+			toFitRows: rowViews,
+			separatorHeight: rowSeparatorHeight,
+			separatorColor: rowSeparatorColor
+		)
 	}
 	
 	/// Called when the textfield change it's content
@@ -102,6 +119,25 @@ extension AutocompleteController {
 			let textValue = autocompleteTextField.text,
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
+		
+		rowViews.forEach({ $0.removeFromSuperview() })
+		containerView.subviews.forEach({ $0.removeFromSuperview() })
+		containerView.removeFromSuperview()
+		
+		let filteredValues = values.filter({ currentItem in
+			String(currentItem.prefix(textValue.count)).levenshtein(textValue) <= maximumLevenshteinDistance
+		})
+		
+		let rowViews = getRowViews(fromValues: Array(filteredValues.prefix(maximumAmountOfDisplayableRows)))
+		resizeContainer(
+			containerView,
+			under: autocompleteTextField,
+			withBorderWidth: borderWidth,
+			andBorderColor: borderColor,
+			toFitRows: rowViews,
+			separatorHeight: rowSeparatorHeight,
+			separatorColor: rowSeparatorColor
+		)
 	}
 	
 	/// Called when the textfield lose focus
@@ -119,6 +155,39 @@ extension AutocompleteController {
 // MARK: - Private methods (utilities)
 
 extension AutocompleteController {
+	
+	/// Method that resize the given container according to the given data
+	/// - Parameters:
+	///   - containerView: The container to be resized
+	///   - textField: The textfield under which the container must be placed
+	///   - borderWidth: Container border width
+	///   - borderColor: Container border color
+	///   - rowViews: The row views that must be placed inside the container
+	private func resizeContainer(
+		_ containerView: UIView,
+		under textField: UITextField,
+		withBorderWidth borderWidth: CGFloat,
+		andBorderColor borderColor: UIColor,
+		toFitRows rowViews: [AutocompleteRowView],
+		separatorHeight: CGFloat,
+		separatorColor: UIColor
+	) {
+		setContainerLayout(containerView, borderWidth: borderWidth, borderColor: borderColor)
+		containerView.frame = getFrameBasedOnTextField(
+			textField,
+			andRowViews: rowViews,
+			separatorHeight: separatorHeight
+		)
+		containerView.addSubview(
+			createStackWithRowViews(
+				rowViews,
+				thatFit: containerView,
+				separatorHeight: separatorHeight,
+				separatorColor: separatorColor
+			)
+		)
+		autocompleteTextField.superview?.addSubview(containerView)
+	}
 	
 	/// Return an Array of AutocompleteRowView configured with the given values
 	/// - Parameter values: List of String used to configure the views
@@ -138,7 +207,11 @@ extension AutocompleteController {
 	///   - containerView: UIView that has to be configured
 	///   - borderWidth: containerView border width
 	///   - borderColor: containerView border color
-	private func setContainerLayout(_ containerView: UIView, borderWidth: CGFloat, borderColor: UIColor) {
+	private func setContainerLayout(
+		_ containerView: UIView,
+		borderWidth: CGFloat,
+		borderColor: UIColor
+	) {
 		containerView.layer.borderWidth = borderWidth
 		containerView.layer.borderColor = borderColor.cgColor
 	}
@@ -148,14 +221,18 @@ extension AutocompleteController {
 	/// - Parameters:
 	///   - textField: Textfield under which the CGRect has to be
 	///   - rowViews: RowViews that has to be inside the CGRect
-	private func getFrameBasedOnTextField(_ textField: UITextField, andRowViews rowViews: [AutocompleteRowView]) -> CGRect {
+	private func getFrameBasedOnTextField(
+		_ textField: UITextField,
+		andRowViews rowViews: [AutocompleteRowView],
+		separatorHeight: CGFloat
+	) -> CGRect {
 		return CGRect(
 			x: textField.frame.origin.x,
 			y: textField.frame.origin.y + autocompleteTextField.frame.height,
 			width: textField.frame.width,
 			height: rowViews.reduce(0) { sum, item in
 				return sum + item.intrinsicContentSize.height
-			}
+			} + (CGFloat(rowViews.count) * separatorHeight)
 		)
 	}
 	
@@ -164,16 +241,33 @@ extension AutocompleteController {
 	/// - Parameters:
 	///   - rowViews: All the row views that has to be added in the stackView
 	///   - containerView: The containerView whose measure has to be used by the stackView
-	private func createStackWithRowViews(_ rowViews: [AutocompleteRowView], thatFit containerView: UIView) -> UIStackView {
+	private func createStackWithRowViews(
+		_ rowViews: [AutocompleteRowView],
+		thatFit containerView: UIView,
+		separatorHeight: CGFloat,
+		separatorColor: UIColor
+	) -> UIStackView {
 		let stackView: UIStackView = UIStackView()
 		stackView.axis = .vertical
-		rowViews.forEach({
-			stackView.addArrangedSubview($0)
+		stackView.distribution = .fillProportionally
+		rowViews.enumerated().forEach({ index, item in
+			if index > 0 {
+				let separator: SeparatorView = SeparatorView(
+					frame: CGRect(
+						x: item.frame.origin.x,
+						y: item.frame.origin.y,
+						width: containerView.bounds.width,
+						height: separatorHeight
+					)
+				)
+				separator.backgroundColor = separatorColor
+				stackView.addArrangedSubview(separator)
+			}
+			stackView.addArrangedSubview(item)
 		})
 		stackView.frame = containerView.bounds
 		return stackView
 	}
-	
 	
 }
 
@@ -192,7 +286,10 @@ extension AutocompleteController {
 	/// - Parameters:
 	///   - textField: Textfield on which the method must be binded
 	///   - method: Method to bind
-	private func addDidChangeObserverTo(_ textField: UITextField, method: @escaping () -> Void) {
+	private func addDidChangeObserverTo(
+		_ textField: UITextField,
+		method: @escaping () -> Void
+	) {
 		NotificationCenter.default.addObserver(
 			forName: UITextField.textDidChangeNotification,
 			object: textField,
@@ -212,7 +309,10 @@ extension AutocompleteController {
 	/// - Parameters:
 	///   - textField: Textfield on which the method must be binded
 	///   - method: Method to bind
-	private func addBeginEditingObserverTo(_ textField: UITextField, method: @escaping () -> Void) {
+	private func addBeginEditingObserverTo(
+		_ textField: UITextField,
+		method: @escaping () -> Void
+	) {
 		NotificationCenter.default.addObserver(
 			forName: UITextField.textDidBeginEditingNotification,
 			object: textField,
@@ -225,7 +325,6 @@ extension AutocompleteController {
 			else { return }
 			
 			method()
-			self.autocompleteTextFieldDidBegin()
 		}
 	}
 	
@@ -233,7 +332,10 @@ extension AutocompleteController {
 	/// - Parameters:
 	///   - textField: Textfield on which the method must be binded
 	///   - method: Method to bind
-	private func addEndEditingObserverTo(_ textField: UITextField, method: @escaping () -> Void) {
+	private func addEndEditingObserverTo(
+		_ textField: UITextField,
+		method: @escaping () -> Void
+	) {
 		NotificationCenter.default.addObserver(
 			forName: UITextField.textDidEndEditingNotification,
 			object: textField,
@@ -246,7 +348,6 @@ extension AutocompleteController {
 			else { return }
 			
 			method()
-			self.autocompleteTextFieldDidEnd()
 		}
 	}
 	
@@ -255,7 +356,10 @@ extension AutocompleteController {
 // MARK: - Autocomplete row view delegate
 
 extension AutocompleteController: AutocompleteRowViewDelegate {
-	func autocompleteRowView(_ autocompleteRowView: AutocompleteRowView, didSelect index: Int) {
+	func autocompleteRowView(
+		_ autocompleteRowView: AutocompleteRowView,
+		didSelect index: Int
+	) {
 		
 	}
 }
