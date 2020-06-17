@@ -8,12 +8,6 @@
 
 import UIKit
 
-public protocol AutocompleteTextFieldDelegate: class {
-	
-}
-
 public class AutocompleteTextField: UITextField, Autocompletable {
-		
-	public var autocompleteDelegate: AutocompleteTextFieldDelegate?
-		
+	
 }

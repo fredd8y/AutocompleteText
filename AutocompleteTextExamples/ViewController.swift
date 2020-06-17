@@ -17,16 +17,25 @@ class ViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		autocompleteController = AutocompleteController(
-			autocompleteTextField: autocompleteTextField,
-			values: ["ciao", "come", "stai"],
-			borderWidth: 1,
-			borderColor: UIColor.black,
-			backgroundColor: UIColor.cyan
-		)
+		autocompleteController = AutocompleteController(autocompleteTextField: autocompleteTextField)
+		guard let _autocompleteController = self.autocompleteController else { return }
+		_autocompleteController.delegate = self
+		_autocompleteController.values = ["ciao", "come", "stai"]
+		_autocompleteController.minimumAmountOfCharacter = 0
+		_autocompleteController.borderWidth = 1
+		_autocompleteController.borderColor = UIColor.black
+		_autocompleteController.backgroundColor = UIColor.red
 	}
 
 
 }
 
+extension ViewController: AutocompleteControllerDelegate {
+	func autocompleteTextField(_ autocompletable: Autocompletable, didTapIndex index: Int) {
+		// TODO
+	}
+	
+	func autocompleteTextFieldDismissed(_ autocompletable: Autocompletable) {
+		// TODO
+	}
+}

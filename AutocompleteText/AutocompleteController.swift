@@ -8,74 +8,161 @@
 
 import UIKit
 
+// MARK: - Autocomplete controller delegate
+
+public protocol AutocompleteControllerDelegate: class {
+	func autocompleteTextField(_ autocompletable: Autocompletable, didTapIndex index: Int)
+	func autocompleteTextFieldDismissed(_ autocompletable: Autocompletable)
+}
+
+// MARK: - Autocomplete controller
+
 public class AutocompleteController {
+	
+//	MARK: - Properties
+	
+	/// Autocomplete controller delegate
+	public weak var delegate: AutocompleteControllerDelegate?
+	
+	/// The textfield handled by the controller
+	public var autocompleteTextField: Autocompletable
+	
+	/// A boolean value indicating whether the autocomplete is enabled or not
+	public var autocompleteEnabled: Bool = true
+	
+	/// Minimum amount of character required to trigger the autocompletion
+	public var minimumAmountOfCharacter: Int = 2
+	
+	/// Maximum amount of rows that can be displayed under the textfield
+	public var maximumAmountOfDisplayableRows: Int = 5
+	
+	/// List of words that can be shown
+	public var values: [String] = []
+	
+	/// Width of the list container border
+	public var borderWidth: CGFloat = 1.0
+	
+	/// Border color of the list container
+	public var borderColor: UIColor = UIColor.gray
+	
+	/// Background color of the hint rows
+	public var backgroundColor: UIColor = UIColor.white
 	
 //	MARK: - Private properties
 	
-	/// The textfield handled by the controller
-	var autocompleteTextField: Autocompletable
-	
 	/// The autocomplete view handled by this controller
-	var containerView: UIView = UIView()
+	private var containerView: UIView = UIView()
 	
 	/// Rows currently displayed
-	var rowViews: [AutocompleteRowView] = []
+	private var rowViews: [AutocompleteRowView] = []
 	
-	/// List of words that the textfield can show
-	var values: [String]
+//	MARK: - Public initializers
 	
-	/// Width of the textfield autocomplete list container border
-	var borderWidth: CGFloat
+	/// Initializer
+	/// - Parameters:
+	///   - autocompleteTextField: Textfield handled by the controller
+	public init(autocompleteTextField: Autocompletable) {
+		self.autocompleteTextField = autocompleteTextField
+		
+		setupListeners()
+	}
 	
-	/// Border color of the autocomplete list container
-	var borderColor: UIColor
-	
-	/// Background color of the hint rows
-	var backgroundColor: UIColor
-	
-//	MARK: - Methods
+}
+
+// MARK: - Private methods
+
+extension AutocompleteController {
 	
 	/// Called when the textfield gain focus
-	func autocompleteTextFieldDidBegin() {
-		rowViews = values.enumerated().map({ index, element in
+	private func autocompleteTextFieldDidBegin() {
+		guard
+			delegate != nil,
+			autocompleteEnabled,
+			let textValue = autocompleteTextField.text,
+			textValue.count >= minimumAmountOfCharacter
+		else { return }
+		
+		rowViews = getRowViews(fromValues: Array(values.prefix(maximumAmountOfDisplayableRows)))
+		setContainerLayout(containerView, borderWidth: borderWidth, borderColor: borderColor)
+		containerView.frame = getFrameBasedOnTextField(autocompleteTextField, andRowViews: rowViews)
+		containerView.addSubview(createStackWithRowViews(rowViews, thatFit: containerView))
+		autocompleteTextField.superview?.addSubview(containerView)
+	}
+	
+	/// Called when the textfield change it's content
+	private func autocompleteTextFieldDidChange() {
+		guard
+			delegate != nil,
+			autocompleteEnabled
+		else { return }
+	}
+	
+	/// Called when the textfield lose focus
+	private func autocompleteTextFieldDidEnd() {
+		guard
+			delegate != nil,
+			autocompleteEnabled
+		else { return }
+		
+		delegate?.autocompleteTextFieldDismissed(autocompleteTextField)
+	}
+	
+	/// Return an Array of AutocompleteRowView configured with the given values
+	/// - Parameter values: List of String used to configure the views
+	private func getRowViews(fromValues values: [String]) -> [AutocompleteRowView] {
+		return values.enumerated().map({ index, element in
 			let newRow = AutocompleteRowView()
+			newRow.delegate = self
 			newRow.index = index
 			newRow.backgroundColor = backgroundColor
 			newRow.text = element
 			return newRow
 		})
+	}
+	
+	/// Configure the appearance of the container view, based on the given values
+	/// - Parameters:
+	///   - containerView: UIView that has to be configured
+	///   - borderWidth: containerView border width
+	///   - borderColor: containerView border color
+	private func setContainerLayout(_ containerView: UIView, borderWidth: CGFloat, borderColor: UIColor) {
 		containerView.layer.borderWidth = borderWidth
 		containerView.layer.borderColor = borderColor.cgColor
-		containerView.frame = CGRect(
-			x: autocompleteTextField.frame.origin.x,
-			y: autocompleteTextField.frame.origin.y + autocompleteTextField.frame.height,
-			width: autocompleteTextField.frame.width,
+	}
+	
+	/// Return a CGRect whose measure is calculated so that it is below the given textfield,
+	/// and is high enough to fit all the given row views
+	/// - Parameters:
+	///   - textField: Textfield under which the CGRect has to be
+	///   - rowViews: RowViews that has to be inside the CGRect
+	private func getFrameBasedOnTextField(_ textField: UITextField, andRowViews rowViews: [AutocompleteRowView]) -> CGRect {
+		return CGRect(
+			x: textField.frame.origin.x,
+			y: textField.frame.origin.y + autocompleteTextField.frame.height,
+			width: textField.frame.width,
 			height: rowViews.reduce(0) { sum, item in
 				return sum + item.intrinsicContentSize.height
 			}
 		)
+	}
+	
+	/// Create and return a UIStackView containing all the given rowViews,
+	/// and set it's bounds equal to the given containerView
+	/// - Parameters:
+	///   - rowViews: All the row views that has to be added in the stackView
+	///   - containerView: The containerView whose measure has to be used by the stackView
+	private func createStackWithRowViews(_ rowViews: [AutocompleteRowView], thatFit containerView: UIView) -> UIStackView {
 		let stackView: UIStackView = UIStackView()
 		stackView.axis = .vertical
 		rowViews.forEach({
 			stackView.addArrangedSubview($0)
 		})
 		stackView.frame = containerView.bounds
-		containerView.addSubview(stackView)
-		autocompleteTextField.superview?.addSubview(containerView)
-	}
-	
-	/// Called when the textfield lose focus
-	func autocompleteTextFieldDidEnd() {
-		
-	}
-	
-	/// Called when the textfield change it's content
-	func autocompleteTextFieldDidChange() {
-		
+		return stackView
 	}
 	
 	/// Setup all the listeners to handle all the events emitted by the textField
-	func setupListeners() {
+	private func setupListeners() {
 		
 		NotificationCenter.default.addObserver(
 			forName: UITextField.textDidChangeNotification,
@@ -119,31 +206,12 @@ public class AutocompleteController {
 			self.autocompleteTextFieldDidEnd()
 		}
 	}
-	
-//	MARK: - Initializers
-	
-	/// Initializer
-	/// - Parameters:
-	///   - autocompleteTextField: Textfield handled by the controller
-	///   - values: DataSource of all possible values
-	///   - borderWidth: Border width of the whole autocomplete view
-	///   - borderColor: Border color of the whole autocomplete view
-	///   - backgroundColor: Background color of a single rows
-	public init(
-		autocompleteTextField: Autocompletable,
-		values: [String],
-		borderWidth: CGFloat,
-		borderColor: UIColor,
-		backgroundColor: UIColor
-	) {
-		self.autocompleteTextField = autocompleteTextField
-		self.values = values
-		self.borderWidth = borderWidth
-		self.borderColor = borderColor
-		self.backgroundColor = backgroundColor
-		
-		setupListeners()
-	}
-	
 }
 
+// MARK: - Autocomplete row view delegate
+
+extension AutocompleteController: AutocompleteRowViewDelegate {
+	func autocompleteRowView(_ autocompleteRowView: AutocompleteRowView, didSelect index: Int) {
+		
+	}
+}

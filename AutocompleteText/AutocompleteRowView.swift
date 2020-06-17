@@ -8,6 +8,14 @@
 
 import UIKit
 
+// MARK: - Autocomplete row view delegate
+
+protocol AutocompleteRowViewDelegate: class {
+	func autocompleteRowView(_ autocompleteRowView: AutocompleteRowView, didSelect index: Int)
+}
+
+// MARK: - Autocomplete row view
+
 class AutocompleteRowView: UIView {
 	
 //	MARK: - Private properties
@@ -21,7 +29,16 @@ class AutocompleteRowView: UIView {
 	/// Trailing and leading inset
 	private let horizontalInset: CGFloat = 10
 	
+	/// Tap gesture to detect which row has been tapped
+	private lazy var tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(
+		target: self,
+		action: #selector(handleTap)
+	)
+	
 //	MARK: - Public properties
+	
+	/// Autocomplete row view delegate
+	weak var delegate: AutocompleteRowViewDelegate?
 	
 	/// The Word that has to be shown
 	var text: String = "" {
@@ -56,12 +73,18 @@ class AutocompleteRowView: UIView {
 		translatesAutoresizingMaskIntoConstraints = false
 		label.translatesAutoresizingMaskIntoConstraints = false
 		
+		addGestureRecognizer(tapGesture)
+		
 		NSLayoutConstraint.activate([
 			label.topAnchor.constraint(equalTo: topAnchor, constant: verticalInset),
 			label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalInset),
 			label.centerXAnchor.constraint(equalTo: centerXAnchor),
 			label.centerYAnchor.constraint(equalTo: centerYAnchor)
 		])
+	}
+	
+	@objc private func handleTap() {
+		delegate?.autocompleteRowView(self, didSelect: index)
 	}
 	
 //	MARK: - Override methods
