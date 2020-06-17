@@ -93,7 +93,9 @@ extension AutocompleteController {
 	private func autocompleteTextFieldDidChange() {
 		guard
 			delegate != nil,
-			autocompleteEnabled
+			autocompleteEnabled,
+			let textValue = autocompleteTextField.text,
+			textValue.count >= minimumAmountOfCharacter
 		else { return }
 	}
 	
