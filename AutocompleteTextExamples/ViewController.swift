@@ -13,13 +13,18 @@ class ViewController: UIViewController {
 	
 	@IBOutlet weak var autocompleteTextField: AutocompleteTextField!
 	
+	private var autocompleteController: AutocompleteController?
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		autocompleteTextField.autocompleteRowsBackgroundColor = UIColor.cyan
-		autocompleteTextField.autocompleteViewBorderWidth = 1
-		autocompleteTextField.autocompleteViewBorderColor = UIColor.black
-		autocompleteTextField.values = ["ciao", "come", "stai"]
+		autocompleteController = AutocompleteController(
+			autocompleteTextField: autocompleteTextField,
+			values: ["ciao", "come", "stai"],
+			borderWidth: 1,
+			borderColor: UIColor.black,
+			backgroundColor: UIColor.cyan
+		)
 	}
 
 

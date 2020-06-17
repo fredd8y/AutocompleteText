@@ -16,11 +16,12 @@
 		8DA87A68249257F800148865 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DA87A66249257F800148865 /* Main.storyboard */; };
 		8DA87A6A249257F900148865 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DA87A69249257F900148865 /* Assets.xcassets */; };
 		8DA87A6D249257F900148865 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DA87A6B249257F900148865 /* LaunchScreen.storyboard */; };
-		8DA87A812492581200148865 /* AutocompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A802492581200148865 /* AutocompleteView.swift */; };
 		8DA87A832492594200148865 /* AutocompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A822492594200148865 /* AutocompleteRowView.swift */; };
 		8DA87A8924928A4200148865 /* Autocompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A8824928A4200148865 /* Autocompletable.swift */; };
 		8DC6864D2493658C00D1350B /* AutocompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A862492856100148865 /* AutocompleteTextField.swift */; };
 		8DC6864F2493661800D1350B /* AutocompleteText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA87A40249257C000148865 /* AutocompleteText.framework */; };
+		8DC686512493A77A00D1350B /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC686502493A77A00D1350B /* UIApplication.swift */; };
+		8DC686532493B58C00D1350B /* AutocompleteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC686522493B58C00D1350B /* AutocompleteController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,10 +49,11 @@
 		8DA87A69249257F900148865 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DA87A6C249257F900148865 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DA87A6E249257F900148865 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8DA87A802492581200148865 /* AutocompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteView.swift; sourceTree = "<group>"; };
 		8DA87A822492594200148865 /* AutocompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteRowView.swift; sourceTree = "<group>"; };
 		8DA87A862492856100148865 /* AutocompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteTextField.swift; sourceTree = "<group>"; };
 		8DA87A8824928A4200148865 /* Autocompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autocompletable.swift; sourceTree = "<group>"; };
+		8DC686502493A77A00D1350B /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		8DC686522493B58C00D1350B /* AutocompleteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,10 +109,11 @@
 			children = (
 				8DA87A43249257C000148865 /* AutocompleteText.h */,
 				8DA87A44249257C000148865 /* Info.plist */,
-				8DA87A802492581200148865 /* AutocompleteView.swift */,
 				8DA87A822492594200148865 /* AutocompleteRowView.swift */,
 				8DA87A862492856100148865 /* AutocompleteTextField.swift */,
 				8DA87A8824928A4200148865 /* Autocompletable.swift */,
+				8DC686502493A77A00D1350B /* UIApplication.swift */,
+				8DC686522493B58C00D1350B /* AutocompleteController.swift */,
 			);
 			path = AutocompleteText;
 			sourceTree = "<group>";
@@ -286,10 +289,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DC686512493A77A00D1350B /* UIApplication.swift in Sources */,
+				8DC686532493B58C00D1350B /* AutocompleteController.swift in Sources */,
 				8DC6864D2493658C00D1350B /* AutocompleteTextField.swift in Sources */,
 				8DA87A8924928A4200148865 /* Autocompletable.swift in Sources */,
 				8DA87A832492594200148865 /* AutocompleteRowView.swift in Sources */,
-				8DA87A812492581200148865 /* AutocompleteView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

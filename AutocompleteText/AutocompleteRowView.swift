@@ -15,12 +15,19 @@ class AutocompleteRowView: UIView {
 	/// Label that contain the given text
 	private let label: UILabel = UILabel()
 	
+	/// Top and bottom inset
+	private let verticalInset: CGFloat = 10
+	
+	/// Trailing and leading inset
+	private let horizontalInset: CGFloat = 10
+	
 //	MARK: - Public properties
 	
 	/// The Word that has to be shown
 	var text: String = "" {
 		didSet {
 			label.text = text
+			label.sizeToFit()
 		}
 	}
 	
@@ -46,14 +53,24 @@ class AutocompleteRowView: UIView {
 	private func commonInit() {
 		addSubview(label)
 		
+		translatesAutoresizingMaskIntoConstraints = false
 		label.translatesAutoresizingMaskIntoConstraints = false
 		
 		NSLayoutConstraint.activate([
-			label.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-			label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+			label.topAnchor.constraint(equalTo: topAnchor, constant: verticalInset),
+			label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalInset),
 			label.centerXAnchor.constraint(equalTo: centerXAnchor),
 			label.centerYAnchor.constraint(equalTo: centerYAnchor)
 		])
+	}
+	
+//	MARK: - Override methods
+	
+	override var intrinsicContentSize: CGSize {
+		return CGSize(
+			width: label.frame.width + (2 * horizontalInset),
+			height: label.frame.height + (2 * verticalInset)
+		)
 	}
 	
 }
