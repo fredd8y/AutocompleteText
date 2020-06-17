@@ -46,6 +46,9 @@ public class AutocompleteController {
 		didSet { values.sort() }
 	}
 	
+	/// Flag that indicates if the match has to be case sensitive or not
+	public var isCaseSensitive: Bool = true
+	
 	/// Width of the list container border
 	public var borderWidth: CGFloat = 1.0
 	
@@ -95,7 +98,10 @@ extension AutocompleteController {
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		
-		let filteredValues = values.filter({ currentItem in
+		var _values = values
+		if isCaseSensitive { _values = _values.map({ return $0.lowercased() })}
+		
+		let filteredValues = _values.filter({ currentItem in
 			String(currentItem.prefix(textValue.count)).levenshtein(textValue) <= maximumLevenshteinDistance
 		})
 		
@@ -124,7 +130,10 @@ extension AutocompleteController {
 		containerView.subviews.forEach({ $0.removeFromSuperview() })
 		containerView.removeFromSuperview()
 		
-		let filteredValues = values.filter({ currentItem in
+		var _values = values
+		if isCaseSensitive { _values = _values.map({ return $0.lowercased() })}
+		
+		let filteredValues = _values.filter({ currentItem in
 			String(currentItem.prefix(textValue.count)).levenshtein(textValue) <= maximumLevenshteinDistance
 		})
 		
