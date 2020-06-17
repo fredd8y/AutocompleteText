@@ -36,6 +36,11 @@ public class AutocompleteController {
 	/// Maximum amount of rows that can be displayed under the textfield
 	public var maximumAmountOfDisplayableRows: Int = 5
 	
+	/// Maximum levenshtein distance, this distance is defined as the
+	/// minimum amount of single changes (insert, delete, substitution)
+	/// required to change one word into the other
+	public var maximumLevenshteinDistance: Int = 0
+	
 	/// List of words that can be shown
 	public var values: [String] = []
 	
@@ -64,12 +69,12 @@ public class AutocompleteController {
 	public init(autocompleteTextField: Autocompletable) {
 		self.autocompleteTextField = autocompleteTextField
 		
-		setupListeners()
+		addObserversTo(autocompleteTextField)
 	}
 	
 }
 
-// MARK: - Private methods
+// MARK: - Private methods (lifecycle)
 
 extension AutocompleteController {
 	
@@ -108,6 +113,12 @@ extension AutocompleteController {
 		
 		delegate?.autocompleteTextFieldDismissed(autocompleteTextField)
 	}
+	
+}
+
+// MARK: - Private methods (utilities)
+
+extension AutocompleteController {
 	
 	/// Return an Array of AutocompleteRowView configured with the given values
 	/// - Parameter values: List of String used to configure the views
@@ -163,12 +174,28 @@ extension AutocompleteController {
 		return stackView
 	}
 	
+	
+}
+
+// MARK: - Private methods (observers)
+
+extension AutocompleteController {
+	
 	/// Setup all the listeners to handle all the events emitted by the textField
-	private func setupListeners() {
-		
+	private func addObserversTo(_ textField: UITextField) {
+		addBeginEditingObserverTo(textField, method: { self.autocompleteTextFieldDidBegin() })
+		addDidChangeObserverTo(textField, method: { self.autocompleteTextFieldDidChange() })
+		addEndEditingObserverTo(textField, method: { self.autocompleteTextFieldDidEnd() })
+	}
+	
+	/// Bind the given method to the given textfield textDidChangeNotification event
+	/// - Parameters:
+	///   - textField: Textfield on which the method must be binded
+	///   - method: Method to bind
+	private func addDidChangeObserverTo(_ textField: UITextField, method: @escaping () -> Void) {
 		NotificationCenter.default.addObserver(
 			forName: UITextField.textDidChangeNotification,
-			object: autocompleteTextField,
+			object: textField,
 			queue: nil
 		) { [weak self] notification in
 			guard
@@ -177,12 +204,18 @@ extension AutocompleteController {
 				textField == self.autocompleteTextField
 			else { return }
 			
-			self.autocompleteTextFieldDidChange()
+			method()
 		}
-		
+	}
+	
+	/// Bind the given method to the given textfield textDidBeginEditingNotification event
+	/// - Parameters:
+	///   - textField: Textfield on which the method must be binded
+	///   - method: Method to bind
+	private func addBeginEditingObserverTo(_ textField: UITextField, method: @escaping () -> Void) {
 		NotificationCenter.default.addObserver(
 			forName: UITextField.textDidBeginEditingNotification,
-			object: autocompleteTextField,
+			object: textField,
 			queue: nil
 		) { [weak self] notification in
 			guard
@@ -191,12 +224,19 @@ extension AutocompleteController {
 				textField == self.autocompleteTextField
 			else { return }
 			
+			method()
 			self.autocompleteTextFieldDidBegin()
 		}
-		
+	}
+	
+	/// Bind the given method to the given textfield textDidEndEditingNotification event
+	/// - Parameters:
+	///   - textField: Textfield on which the method must be binded
+	///   - method: Method to bind
+	private func addEndEditingObserverTo(_ textField: UITextField, method: @escaping () -> Void) {
 		NotificationCenter.default.addObserver(
 			forName: UITextField.textDidEndEditingNotification,
-			object: autocompleteTextField,
+			object: textField,
 			queue: nil
 		) { [weak self] notification in
 			guard
@@ -205,9 +245,11 @@ extension AutocompleteController {
 				textField == self.autocompleteTextField
 			else { return }
 			
+			method()
 			self.autocompleteTextFieldDidEnd()
 		}
 	}
+	
 }
 
 // MARK: - Autocomplete row view delegate
