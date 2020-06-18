@@ -49,6 +49,14 @@ public class AutocompleteController {
 	/// Flag that indicates if the match has to be case sensitive or not
 	public var isCaseSensitive: Bool = true
 	
+	/// Corner radius of the container view
+	public var cornerRadius: CGFloat = 0 {
+		didSet {
+			containerView.layer.cornerRadius = cornerRadius
+			containerView.layer.masksToBounds = false
+		}
+	}
+	
 	/// Width of the list container border
 	public var borderWidth: CGFloat = 1.0
 	
@@ -173,7 +181,7 @@ extension AutocompleteController {
 	/// that this filter has.
 	/// Examples:
 	/// -	levenshtein distance = 0, "word" != "lord"
-	/// -	levenshtein distance = 1, "word" == "lord"
+	/// -	levenshtein distance = 1, "word" = "lord"
 	///
 	/// - Parameters:
 	///   - values: Values to be filtered
