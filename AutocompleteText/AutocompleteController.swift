@@ -50,12 +50,10 @@ public class AutocompleteController {
 	public var isCaseSensitive: Bool = true
 	
 	/// Corner radius of the container view
-	public var cornerRadius: CGFloat = 0 {
-		didSet {
-			containerView.layer.cornerRadius = cornerRadius
-			containerView.layer.masksToBounds = true
-		}
-	}
+	public var cornerRadius: CGFloat = 0
+	
+	/// Corners that has to be rounded
+	public var cornersToRound: UIRectCorner = []
 	
 	/// Shadow configuration of the container view
 	public var shadow: Shadow = .none
@@ -130,7 +128,9 @@ extension AutocompleteController {
 			separatorHeight: rowSeparatorHeight,
 			separatorColor: rowSeparatorColor,
 			shadow: shadow,
-			shadowView: shadowView
+			shadowView: shadowView,
+			cornersToRound: cornersToRound,
+			cornerRadius: cornerRadius
 		)
 	}
 	
@@ -165,7 +165,9 @@ extension AutocompleteController {
 			separatorHeight: rowSeparatorHeight,
 			separatorColor: rowSeparatorColor,
 			shadow: shadow,
-			shadowView: shadowView
+			shadowView: shadowView,
+			cornersToRound: cornersToRound,
+			cornerRadius: cornerRadius
 		)
 	}
 	
@@ -185,6 +187,98 @@ extension AutocompleteController {
 
 extension AutocompleteController {
 	
+	/// Method that resize the given container according to the given data
+	/// - Parameters:
+	///   - containerView: The container to be resized
+	///   - textField: The textfield under which the container must be placed
+	///   - borderWidth: Container border width
+	///   - borderColor: Container border color
+	///   - rowViews: The row views that must be placed inside the container
+	private func resizeContainer(
+		_ containerView: UIView,
+		under textField: UITextField,
+		withBorderWidth borderWidth: CGFloat,
+		andBorderColor borderColor: UIColor,
+		toFitRows rowViews: [AutocompleteRowView],
+		separatorHeight: CGFloat,
+		separatorColor: UIColor,
+		shadow: Shadow,
+		shadowView: UIView,
+		cornersToRound: UIRectCorner,
+		cornerRadius: CGFloat
+	) {
+		containerView.frame = getFrameBasedOnTextField(
+			textField,
+			andRowViews: rowViews,
+			separatorHeight: separatorHeight
+		)
+		roundCorners(cornersToRound, ofContainer: containerView, cornerRadius: cornerRadius)
+		let stackView = createStackWithRowViews(
+			rowViews,
+			thatFit: containerView,
+			separatorHeight: separatorHeight,
+			separatorColor: separatorColor
+		)
+		containerView.addSubview(stackView)
+		setBorderTo(stackView, corners: cornersToRound, cornerRadius: cornerRadius, borderWidth: borderWidth, borderColor: borderColor)
+		setShadowTo(shadowView, containerView: containerView, shadow: shadow, autocompleteTextField: autocompleteTextField)
+		autocompleteTextField.superview?.addSubview(containerView)
+	}
+	
+	/// This method add a border to the view with the given width and the given color
+	/// - Parameters:
+	///   - stackView: The view on which the border has to be draw
+	///   - corners: Corners that has to be rounded
+	///   - cornerRadius: Corner radius value
+	///   - borderWidth: Border width
+	///   - borderColor: Border color
+	private func setBorderTo(
+		_ stackView: UIView,
+		corners: UIRectCorner,
+		cornerRadius: CGFloat,
+		borderWidth: CGFloat,
+		borderColor: UIColor
+	) {
+		let borderLayer: CAShapeLayer = CAShapeLayer()
+		borderLayer.path = UIBezierPath(
+			roundedRect: containerView.bounds,
+			byRoundingCorners: corners,
+			cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
+		).cgPath
+		borderLayer.lineWidth = borderWidth
+		borderLayer.strokeColor = borderColor.cgColor
+		borderLayer.fillColor = UIColor.clear.cgColor
+		borderLayer.frame = containerView.bounds
+		stackView.layer.addSublayer(borderLayer)
+	}
+	
+	/// This method add the given corners radius to the given corners
+	/// - Parameters:
+	///   - corners: The corners to be rounded
+	///   - containerView: The view that has to be rounded
+	///   - cornerRadius: The cornerRadius that has to be applied to the corners
+	private func roundCorners(
+		_ corners: UIRectCorner,
+		ofContainer containerView: UIView,
+		cornerRadius: CGFloat
+	) {
+		containerView.layer.masksToBounds = true
+		
+		let maskLayer: CAShapeLayer = CAShapeLayer()
+		maskLayer.path = UIBezierPath(
+			roundedRect: containerView.bounds,
+			byRoundingCorners: corners,
+			cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
+		).cgPath
+		containerView.layer.mask = maskLayer
+	}
+	
+	/// This method set the shadow to the container view
+	/// - Parameters:
+	///   - shadowView: Shadow view
+	///   - containerView: Container view
+	///   - shadow: The given Shadow
+	///   - autocompleteTextField: The textField under which the container has to be
 	private func setShadowTo(
 		_ shadowView: UIView,
 		containerView: UIView,
@@ -233,42 +327,6 @@ extension AutocompleteController {
 			}
 			return String(_currentItem.prefix(_input.count)).levenshtein(_input) <= levenshteinDistance
 		})
-	}
-	
-	/// Method that resize the given container according to the given data
-	/// - Parameters:
-	///   - containerView: The container to be resized
-	///   - textField: The textfield under which the container must be placed
-	///   - borderWidth: Container border width
-	///   - borderColor: Container border color
-	///   - rowViews: The row views that must be placed inside the container
-	private func resizeContainer(
-		_ containerView: UIView,
-		under textField: UITextField,
-		withBorderWidth borderWidth: CGFloat,
-		andBorderColor borderColor: UIColor,
-		toFitRows rowViews: [AutocompleteRowView],
-		separatorHeight: CGFloat,
-		separatorColor: UIColor,
-		shadow: Shadow,
-		shadowView: UIView
-	) {
-		setContainerLayout(containerView, borderWidth: borderWidth, borderColor: borderColor)
-		containerView.frame = getFrameBasedOnTextField(
-			textField,
-			andRowViews: rowViews,
-			separatorHeight: separatorHeight
-		)
-		containerView.addSubview(
-			createStackWithRowViews(
-				rowViews,
-				thatFit: containerView,
-				separatorHeight: separatorHeight,
-				separatorColor: separatorColor
-			)
-		)
-		setShadowTo(shadowView, containerView: containerView, shadow: shadow, autocompleteTextField: autocompleteTextField)
-		autocompleteTextField.superview?.addSubview(containerView)
 	}
 	
 	/// Return an Array of AutocompleteRowView configured with the given values
