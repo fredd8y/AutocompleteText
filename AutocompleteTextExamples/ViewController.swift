@@ -23,6 +23,8 @@ class ViewController: UIViewController {
 		_autocompleteController.values = (0..<100).map({ _ in
 			return Utils.randomString(range: 4..<10)
 		})
+		_autocompleteController.isCaseSensitive = false
+		_autocompleteController.maximumLevenshteinDistance = 1
 		_autocompleteController.minimumAmountOfCharacter = 0
 	}
 

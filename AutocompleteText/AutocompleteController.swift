@@ -98,14 +98,15 @@ extension AutocompleteController {
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		
-		var _values = values
-		if isCaseSensitive { _values = _values.map({ return $0.lowercased() })}
-		
-		let filteredValues = _values.filter({ currentItem in
-			String(currentItem.prefix(textValue.count)).levenshtein(textValue) <= maximumLevenshteinDistance
-		})
+		let filteredValues = filterValues(
+			values,
+			input: textValue,
+			caseSensitive: isCaseSensitive,
+			levenshteinDistance: maximumLevenshteinDistance
+		)
 		
 		let rowViews = getRowViews(fromValues: Array(filteredValues.prefix(maximumAmountOfDisplayableRows)))
+		
 		resizeContainer(
 			containerView,
 			under: autocompleteTextField,
@@ -130,14 +131,15 @@ extension AutocompleteController {
 		containerView.subviews.forEach({ $0.removeFromSuperview() })
 		containerView.removeFromSuperview()
 		
-		var _values = values
-		if isCaseSensitive { _values = _values.map({ return $0.lowercased() })}
-		
-		let filteredValues = _values.filter({ currentItem in
-			String(currentItem.prefix(textValue.count)).levenshtein(textValue) <= maximumLevenshteinDistance
-		})
+		let filteredValues = filterValues(
+			values,
+			input: textValue,
+			caseSensitive: isCaseSensitive,
+			levenshteinDistance: maximumLevenshteinDistance
+		)
 		
 		let rowViews = getRowViews(fromValues: Array(filteredValues.prefix(maximumAmountOfDisplayableRows)))
+		
 		resizeContainer(
 			containerView,
 			under: autocompleteTextField,
@@ -164,6 +166,31 @@ extension AutocompleteController {
 // MARK: - Private methods (utilities)
 
 extension AutocompleteController {
+	
+	/// This function filter the given list based on the given input,
+	/// it return a list of element that contains the given text as a prefix.
+	/// The levenshtein distance is a parameter that indicates the tolerance
+	/// that this filter has.
+	/// Examples:
+	/// -	levenshtein distance = 0, "word" != "lord"
+	/// -	levenshtein distance = 1, "word" == "lord"
+	///
+	/// - Parameters:
+	///   - values: Values to be filtered
+	///   - input: Text used for the filter
+	///   - caseSensitive: Flag that indicate if the filter has to be case sensitive or insensitive
+	///   - levenshteinDistance: Maximum levenshtein distance
+	private func filterValues(_ values: [String], input: String, caseSensitive: Bool, levenshteinDistance: Int) -> [String] {
+		return values.filter({ currentItem in
+			var _currentItem = currentItem
+			var _input = input
+			if !caseSensitive {
+				_currentItem = _currentItem.lowercased()
+				_input = _input.lowercased()
+			}
+			return String(_currentItem.prefix(_input.count)).levenshtein(_input) <= levenshteinDistance
+		})
+	}
 	
 	/// Method that resize the given container according to the given data
 	/// - Parameters:
