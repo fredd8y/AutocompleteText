@@ -27,6 +27,7 @@ class ViewController: UIViewController {
 		_autocompleteController.maximumLevenshteinDistance = 1
 		_autocompleteController.minimumAmountOfCharacter = 0
 		_autocompleteController.cornerRadius = 8
+		_autocompleteController.shadow = Shadow.bottomRight
 	}
 
 }

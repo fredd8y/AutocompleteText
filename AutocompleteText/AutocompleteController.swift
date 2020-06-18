@@ -53,21 +53,24 @@ public class AutocompleteController {
 	public var cornerRadius: CGFloat = 0 {
 		didSet {
 			containerView.layer.cornerRadius = cornerRadius
-			containerView.layer.masksToBounds = false
+			containerView.layer.masksToBounds = true
 		}
 	}
 	
+	/// Shadow configuration of the container view
+	public var shadow: Shadow = .none
+	
 	/// Width of the list container border
 	public var borderWidth: CGFloat = 1.0
+	
+	/// Border color of the list container
+	public var borderColor: UIColor = UIColor.gray
 	
 	/// Width of the rows separator
 	public var rowSeparatorHeight: CGFloat = 1.0
 	
 	/// Color of the rows separator
 	public var rowSeparatorColor: UIColor = UIColor.gray
-	
-	/// Border color of the list container
-	public var borderColor: UIColor = UIColor.gray
 	
 	/// Background color of the hint rows
 	public var backgroundColor: UIColor = UIColor.white
@@ -76,6 +79,9 @@ public class AutocompleteController {
 	
 	/// The autocomplete view handled by this controller
 	private var containerView: UIView = UIView()
+	
+	/// The view that hold the shadow
+	private var shadowView: UIView = UIView()
 	
 	/// Rows currently displayed
 	private var rowViews: [AutocompleteRowView] = []
@@ -122,7 +128,9 @@ extension AutocompleteController {
 			andBorderColor: borderColor,
 			toFitRows: rowViews,
 			separatorHeight: rowSeparatorHeight,
-			separatorColor: rowSeparatorColor
+			separatorColor: rowSeparatorColor,
+			shadow: shadow,
+			shadowView: shadowView
 		)
 	}
 	
@@ -155,7 +163,9 @@ extension AutocompleteController {
 			andBorderColor: borderColor,
 			toFitRows: rowViews,
 			separatorHeight: rowSeparatorHeight,
-			separatorColor: rowSeparatorColor
+			separatorColor: rowSeparatorColor,
+			shadow: shadow,
+			shadowView: shadowView
 		)
 	}
 	
@@ -175,6 +185,26 @@ extension AutocompleteController {
 
 extension AutocompleteController {
 	
+	private func setShadowTo(
+		_ shadowView: UIView,
+		containerView: UIView,
+		shadow: Shadow,
+		autocompleteTextField: UITextField
+	) {
+		shadowView.layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
+		let configuration: ShadowConfiguration = shadow.configuration(forView: containerView)
+		shadowView.frame = containerView.frame
+		shadowView.layer.shadowOpacity = configuration.shadowOpacity
+		shadowView.layer.shadowColor = configuration.shadowColor
+		shadowView.layer.shadowOffset = configuration.shadowOffset
+		shadowView.layer.shadowPath = configuration.shadowPath
+		shadowView.layer.shadowRadius = configuration.shadowRadius
+		shadowView.layer.shouldRasterize = true
+		containerView.removeFromSuperview()
+		shadowView.addSubview(containerView)
+		autocompleteTextField.superview?.addSubview(shadowView)
+	}
+	
 	/// This function filter the given list based on the given input,
 	/// it return a list of element that contains the given text as a prefix.
 	/// The levenshtein distance is a parameter that indicates the tolerance
@@ -188,7 +218,12 @@ extension AutocompleteController {
 	///   - input: Text used for the filter
 	///   - caseSensitive: Flag that indicate if the filter has to be case sensitive or insensitive
 	///   - levenshteinDistance: Maximum levenshtein distance
-	private func filterValues(_ values: [String], input: String, caseSensitive: Bool, levenshteinDistance: Int) -> [String] {
+	private func filterValues(
+		_ values: [String],
+		input: String,
+		caseSensitive: Bool,
+		levenshteinDistance: Int
+	) -> [String] {
 		return values.filter({ currentItem in
 			var _currentItem = currentItem
 			var _input = input
@@ -214,7 +249,9 @@ extension AutocompleteController {
 		andBorderColor borderColor: UIColor,
 		toFitRows rowViews: [AutocompleteRowView],
 		separatorHeight: CGFloat,
-		separatorColor: UIColor
+		separatorColor: UIColor,
+		shadow: Shadow,
+		shadowView: UIView
 	) {
 		setContainerLayout(containerView, borderWidth: borderWidth, borderColor: borderColor)
 		containerView.frame = getFrameBasedOnTextField(
@@ -230,6 +267,7 @@ extension AutocompleteController {
 				separatorColor: separatorColor
 			)
 		)
+		setShadowTo(shadowView, containerView: containerView, shadow: shadow, autocompleteTextField: autocompleteTextField)
 		autocompleteTextField.superview?.addSubview(containerView)
 	}
 	
@@ -276,7 +314,7 @@ extension AutocompleteController {
 			width: textField.frame.width,
 			height: rowViews.reduce(0) { sum, item in
 				return sum + item.intrinsicContentSize.height
-			} + (CGFloat(rowViews.count) * separatorHeight)
+			} + ((CGFloat(rowViews.count) * separatorHeight) - 1)
 		)
 	}
 	

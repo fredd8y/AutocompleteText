@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - Separator view
+
 class SeparatorView: UIView {
 	
 	override var intrinsicContentSize: CGSize {
