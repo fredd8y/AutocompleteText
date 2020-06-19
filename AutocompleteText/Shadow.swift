@@ -24,18 +24,14 @@ extension Shadow {
 	
 	/// This method return the configuration associated to the given Shadow case
 	/// - Parameter view: The view on which the shadow has to be calculated
-	func configuration(forView view: UIView) -> ShadowConfiguration {
+	func configuration(forView view: UIView, shadowRadius: CGFloat) -> ShadowConfiguration {
 		switch self {
 		case .none:
 			return ShadowConfiguration.none
-		case .bottomRight:
-			return bottomRightShadow(view)
-		case .bottomLeft:
-			return bottomLeftShadow(view)
-		case .full:
-			return fullShadow(view)
 		case .custom(let shadowConfiguration):
 			return shadowConfiguration
+		default:
+			return calculateRadius(self, view: view, shadowRadius: shadowRadius)
 		}
 	}
 	
@@ -45,137 +41,45 @@ extension Shadow {
 
 extension Shadow {
 	
-	/// This method return a shadow that goes from the bottom left corner
-	/// of the view, to the bottom right corner and finally to the top right corner.
-	/// Default shadowRadius: 5
-	/// Default shadowColor: UIColor.gray
-	/// Default shadowOpacity: 0.7
-	/// Default shadowOffset: CGSize.zero
-	/// - Parameter view: The view on which the shadow has to be calculated
-	func bottomRightShadow(_ view: UIView) -> ShadowConfiguration {
+	/// This method calculate and return a shadow based on the case on which
+	/// is called.
+	/// - Parameters:
+	///   - shadow: Shadow case
+	///   - view: View on which the shadow has to be calculated
+	///   - shadowRadius: Shadow radius
+	func calculateRadius(_ shadow: Shadow, view: UIView, shadowRadius: CGFloat) -> ShadowConfiguration {
 		let path: UIBezierPath = UIBezierPath()
-		path.move(
-			to: CGPoint(
-				x: view.bounds.origin.x,
-				y: view.bounds.origin.y + view.bounds.height
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x + view.bounds.width,
-				y: view.bounds.origin.y + view.bounds.height
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x + view.bounds.width,
-				y: view.bounds.origin.y
-			)
-		)
-		// This move is made to end the previous path without
-		// closing it
-		path.move(to: CGPoint.zero)
+		let x: CGFloat = view.bounds.origin.x
+		let y: CGFloat = view.bounds.origin.y + shadowRadius + 1
+		let width: CGFloat = view.bounds.width
+		let height: CGFloat = view.bounds.height - shadowRadius - 1
+		
+		switch shadow {
+		case .bottomRight:
+			path.move(to: CGPoint(x: x, y: y + height))
+			path.addLine(to: CGPoint(x: x + width, y: y + height))
+			path.addLine(to: CGPoint(x: x + width, y: y))
+			path.close()
+		case .bottomLeft:
+			path.move(to: CGPoint(x: x, y: y))
+			path.addLine(to: CGPoint(x: x, y: y + height))
+			path.addLine(to: CGPoint(x: x + width, y: y + height))
+			path.close()
+		case .full:
+			path.move(to: CGPoint(x: x, y: y))
+			path.addLine(to: CGPoint(x: x, y: y + height))
+			path.addLine(to: CGPoint(x: x + width, y: y + height))
+			path.addLine(to: CGPoint(x: x + width, y: y))
+			path.close()
+		default:
+			assertionFailure("Problem in Shadow calculation")
+		}
 		
 		return ShadowConfiguration(
 			shadowColor: UIColor.gray.cgColor,
 			shadowOffset: CGSize.zero,
 			shadowPath: path.cgPath,
-			shadowRadius: 5,
-			shadowOpacity: 0.7
-		)
-	}
-	
-	/// This method return a shadow that goes from the top left corner
-	/// of the view, to the bottom left corner and finally to the bottom right corner.
-	/// Default shadowRadius: 5
-	/// Default shadowColor: UIColor.gray
-	/// Default shadowOpacity: 0.7
-	/// Default shadowOffset: CGSize.zero
-	/// - Parameter view: The view on which the shadow has to be calculated
-	func bottomLeftShadow(_ view: UIView) -> ShadowConfiguration {
-		let path: UIBezierPath = UIBezierPath()
-		path.move(
-			to: CGPoint(
-				x: view.bounds.origin.x,
-				y: view.bounds.origin.y
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x,
-				y: view.bounds.origin.y + view.bounds.height
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x + view.bounds.width,
-				y: view.bounds.origin.y + view.bounds.height
-			)
-		)
-		// This move is made to end the previous path without
-		// closing it
-		path.move(to: CGPoint.zero)
-		
-		return ShadowConfiguration(
-			shadowColor: UIColor.gray.cgColor,
-			shadowOffset: CGSize.zero,
-			shadowPath: path.cgPath,
-			shadowRadius: 5,
-			shadowOpacity: 0.7
-		)
-	}
-	
-	/// This method return a shadow that goes all around the view,
-	/// except for the top
-	/// Default shadowRadius: 5
-	/// Default shadowColor: UIColor.gray
-	/// Default shadowOpacity: 0.7
-	/// Default shadowOffset: CGSize.zero
-	/// - Parameter view: The view on which the shadow has to be calculated
-	func fullShadow(_ view: UIView) -> ShadowConfiguration {
-		let path: UIBezierPath = UIBezierPath()
-		path.move(
-			to: CGPoint(
-				x: view.bounds.origin.x,
-				y: view.bounds.origin.y
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x,
-				y: view.bounds.origin.y + view.bounds.height
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x + view.bounds.width,
-				y: view.bounds.origin.y + view.bounds.height
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x + view.bounds.width,
-				y: view.bounds.origin.y
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x + (view.bounds.width / 2),
-				y: view.bounds.origin.y + (view.bounds.height / 2)
-			)
-		)
-		path.addLine(
-			to: CGPoint(
-				x: view.bounds.origin.x,
-				y: view.bounds.origin.y
-			)
-		)
-		
-		return ShadowConfiguration(
-			shadowColor: UIColor.gray.cgColor,
-			shadowOffset: CGSize.zero,
-			shadowPath: path.cgPath,
-			shadowRadius: 5,
+			shadowRadius: shadowRadius,
 			shadowOpacity: 0.7
 		)
 	}

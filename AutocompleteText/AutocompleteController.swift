@@ -58,6 +58,9 @@ public class AutocompleteController {
 	/// Shadow configuration of the container view
 	public var shadow: Shadow = .none
 	
+	/// Shadow radius of the container view
+	public var shadowRadius: CGFloat = 5
+	
 	/// Width of the list container border
 	public var borderWidth: CGFloat = 1.0
 	
@@ -205,7 +208,10 @@ extension AutocompleteController {
 	/// This method set the shadow to the container view
 	private func setShadowToShadowView() {
 		shadowView.layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
-		let configuration: ShadowConfiguration = shadow.configuration(forView: containerView)
+		let configuration: ShadowConfiguration = shadow.configuration(
+			forView: containerView,
+			shadowRadius: shadowRadius
+		)
 		shadowView.frame = containerView.frame
 		shadowView.layer.shadowOpacity = configuration.shadowOpacity
 		shadowView.layer.shadowColor = configuration.shadowColor
