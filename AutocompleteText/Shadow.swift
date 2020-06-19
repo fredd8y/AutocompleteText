@@ -158,9 +158,18 @@ extension Shadow {
 				y: view.bounds.origin.y
 			)
 		)
-		// This move is made to end the previous path without
-		// closing it
-		path.move(to: CGPoint.zero)
+		path.addLine(
+			to: CGPoint(
+				x: view.bounds.origin.x + (view.bounds.width / 2),
+				y: view.bounds.origin.y + (view.bounds.height / 2)
+			)
+		)
+		path.addLine(
+			to: CGPoint(
+				x: view.bounds.origin.x,
+				y: view.bounds.origin.y
+			)
+		)
 		
 		return ShadowConfiguration(
 			shadowColor: UIColor.gray.cgColor,
