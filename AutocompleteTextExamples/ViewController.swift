@@ -25,7 +25,7 @@ class ViewController: UIViewController {
 		})
 		_autocompleteController.isCaseSensitive = false
 		_autocompleteController.maximumLevenshteinDistance = 1
-		_autocompleteController.minimumAmountOfCharacter = 0
+		_autocompleteController.minimumAmountOfCharacter = 2
 		_autocompleteController.shadow = Shadow.bottomRight
 		_autocompleteController.cornerRadius = 4
 		_autocompleteController.cornersToRound = [.allCorners]

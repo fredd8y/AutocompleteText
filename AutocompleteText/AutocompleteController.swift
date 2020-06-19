@@ -119,13 +119,16 @@ extension AutocompleteController {
 		guard
 			delegate != nil,
 			autocompleteEnabled,
-			let textValue = autocompleteTextField.text,
-			textValue.count >= minimumAmountOfCharacter
+			let textValue = autocompleteTextField.text
 		else { return }
 		
-		cleanContainer()
-		rowViews = getRowViews(fromValues: Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows)))
-		resizeContainer()
+		if textValue.count >= minimumAmountOfCharacter {
+			cleanContainer()
+			rowViews = getRowViews(fromValues: Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows)))
+			resizeContainer()
+		} else {
+			cleanContainer()
+		}
 	}
 	
 	/// Called when the textfield lose focus
@@ -135,6 +138,7 @@ extension AutocompleteController {
 			autocompleteEnabled
 		else { return }
 		
+		cleanContainer()
 		delegate?.autocompleteTextFieldDismissed(autocompleteTextField)
 	}
 	
@@ -149,6 +153,7 @@ extension AutocompleteController {
 		rowViews.forEach({ $0.removeFromSuperview() })
 		containerView.subviews.forEach({ $0.removeFromSuperview() })
 		containerView.removeFromSuperview()
+		shadowView.removeFromSuperview()
 	}
 	
 	/// Method that resize the given container according to the parameters
