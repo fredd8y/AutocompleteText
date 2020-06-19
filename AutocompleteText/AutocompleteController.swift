@@ -110,28 +110,8 @@ extension AutocompleteController {
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		
-		let filteredValues = filterValues(
-			values,
-			input: textValue,
-			caseSensitive: isCaseSensitive,
-			levenshteinDistance: maximumLevenshteinDistance
-		)
-		
-		let rowViews = getRowViews(fromValues: Array(filteredValues.prefix(maximumAmountOfDisplayableRows)))
-		
-		resizeContainer(
-			containerView,
-			under: autocompleteTextField,
-			withBorderWidth: borderWidth,
-			andBorderColor: borderColor,
-			toFitRows: rowViews,
-			separatorHeight: rowSeparatorHeight,
-			separatorColor: rowSeparatorColor,
-			shadow: shadow,
-			shadowView: shadowView,
-			cornersToRound: cornersToRound,
-			cornerRadius: cornerRadius
-		)
+		rowViews = getRowViews(fromValues: Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows)))
+		resizeContainer()
 	}
 	
 	/// Called when the textfield change it's content
@@ -143,32 +123,9 @@ extension AutocompleteController {
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		
-		rowViews.forEach({ $0.removeFromSuperview() })
-		containerView.subviews.forEach({ $0.removeFromSuperview() })
-		containerView.removeFromSuperview()
-		
-		let filteredValues = filterValues(
-			values,
-			input: textValue,
-			caseSensitive: isCaseSensitive,
-			levenshteinDistance: maximumLevenshteinDistance
-		)
-		
-		let rowViews = getRowViews(fromValues: Array(filteredValues.prefix(maximumAmountOfDisplayableRows)))
-		
-		resizeContainer(
-			containerView,
-			under: autocompleteTextField,
-			withBorderWidth: borderWidth,
-			andBorderColor: borderColor,
-			toFitRows: rowViews,
-			separatorHeight: rowSeparatorHeight,
-			separatorColor: rowSeparatorColor,
-			shadow: shadow,
-			shadowView: shadowView,
-			cornersToRound: cornersToRound,
-			cornerRadius: cornerRadius
-		)
+		cleanContainer()
+		rowViews = getRowViews(fromValues: Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows)))
+		resizeContainer()
 	}
 	
 	/// Called when the textfield lose focus
@@ -187,62 +144,32 @@ extension AutocompleteController {
 
 extension AutocompleteController {
 	
-	/// Method that resize the given container according to the given data
-	/// - Parameters:
-	///   - containerView: The container to be resized
-	///   - textField: The textfield under which the container must be placed
-	///   - borderWidth: Container border width
-	///   - borderColor: Container border color
-	///   - rowViews: The row views that must be placed inside the container
-	private func resizeContainer(
-		_ containerView: UIView,
-		under textField: UITextField,
-		withBorderWidth borderWidth: CGFloat,
-		andBorderColor borderColor: UIColor,
-		toFitRows rowViews: [AutocompleteRowView],
-		separatorHeight: CGFloat,
-		separatorColor: UIColor,
-		shadow: Shadow,
-		shadowView: UIView,
-		cornersToRound: UIRectCorner,
-		cornerRadius: CGFloat
-	) {
-		containerView.frame = getFrameBasedOnTextField(
-			textField,
-			andRowViews: rowViews,
-			separatorHeight: separatorHeight
-		)
-		roundCorners(cornersToRound, ofContainer: containerView, cornerRadius: cornerRadius)
-		let stackView = createStackWithRowViews(
-			rowViews,
-			thatFit: containerView,
-			separatorHeight: separatorHeight,
-			separatorColor: separatorColor
-		)
+	/// Utility method that remove all the views from the container
+	private func cleanContainer() {
+		rowViews.forEach({ $0.removeFromSuperview() })
+		containerView.subviews.forEach({ $0.removeFromSuperview() })
+		containerView.removeFromSuperview()
+	}
+	
+	/// Method that resize the given container according to the parameters
+	private func resizeContainer() {
+		containerView.frame = getFrameBasedOnTextField()
+		roundCorners()
+		let stackView = createStackWithRowViews()
 		containerView.addSubview(stackView)
-		setBorderTo(stackView, corners: cornersToRound, cornerRadius: cornerRadius, borderWidth: borderWidth, borderColor: borderColor)
-		setShadowTo(shadowView, containerView: containerView, shadow: shadow, autocompleteTextField: autocompleteTextField)
+		setBorderTo(stackView)
+		setShadowToShadowView()
 		autocompleteTextField.superview?.addSubview(containerView)
 	}
 	
-	/// This method add a border to the view with the given width and the given color
+	/// This method add a border to the view with width and color set
 	/// - Parameters:
 	///   - stackView: The view on which the border has to be draw
-	///   - corners: Corners that has to be rounded
-	///   - cornerRadius: Corner radius value
-	///   - borderWidth: Border width
-	///   - borderColor: Border color
-	private func setBorderTo(
-		_ stackView: UIView,
-		corners: UIRectCorner,
-		cornerRadius: CGFloat,
-		borderWidth: CGFloat,
-		borderColor: UIColor
-	) {
+	private func setBorderTo(_ stackView: UIView) {
 		let borderLayer: CAShapeLayer = CAShapeLayer()
 		borderLayer.path = UIBezierPath(
 			roundedRect: containerView.bounds,
-			byRoundingCorners: corners,
+			byRoundingCorners: cornersToRound,
 			cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
 		).cgPath
 		borderLayer.lineWidth = borderWidth
@@ -252,39 +179,21 @@ extension AutocompleteController {
 		stackView.layer.addSublayer(borderLayer)
 	}
 	
-	/// This method add the given corners radius to the given corners
-	/// - Parameters:
-	///   - corners: The corners to be rounded
-	///   - containerView: The view that has to be rounded
-	///   - cornerRadius: The cornerRadius that has to be applied to the corners
-	private func roundCorners(
-		_ corners: UIRectCorner,
-		ofContainer containerView: UIView,
-		cornerRadius: CGFloat
-	) {
+	/// This method add the corners radius to the corners that has to be rounded
+	private func roundCorners() {
 		containerView.layer.masksToBounds = true
 		
 		let maskLayer: CAShapeLayer = CAShapeLayer()
 		maskLayer.path = UIBezierPath(
 			roundedRect: containerView.bounds,
-			byRoundingCorners: corners,
+			byRoundingCorners: cornersToRound,
 			cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
 		).cgPath
 		containerView.layer.mask = maskLayer
 	}
 	
 	/// This method set the shadow to the container view
-	/// - Parameters:
-	///   - shadowView: Shadow view
-	///   - containerView: Container view
-	///   - shadow: The given Shadow
-	///   - autocompleteTextField: The textField under which the container has to be
-	private func setShadowTo(
-		_ shadowView: UIView,
-		containerView: UIView,
-		shadow: Shadow,
-		autocompleteTextField: UITextField
-	) {
+	private func setShadowToShadowView() {
 		shadowView.layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
 		let configuration: ShadowConfiguration = shadow.configuration(forView: containerView)
 		shadowView.frame = containerView.frame
@@ -300,7 +209,7 @@ extension AutocompleteController {
 	}
 	
 	/// This function filter the given list based on the given input,
-	/// it return a list of element that contains the given text as a prefix.
+	/// it return a list of element that contains the input as a prefix.
 	/// The levenshtein distance is a parameter that indicates the tolerance
 	/// that this filter has.
 	/// Examples:
@@ -308,24 +217,16 @@ extension AutocompleteController {
 	/// -	levenshtein distance = 1, "word" = "lord"
 	///
 	/// - Parameters:
-	///   - values: Values to be filtered
 	///   - input: Text used for the filter
-	///   - caseSensitive: Flag that indicate if the filter has to be case sensitive or insensitive
-	///   - levenshteinDistance: Maximum levenshtein distance
-	private func filterValues(
-		_ values: [String],
-		input: String,
-		caseSensitive: Bool,
-		levenshteinDistance: Int
-	) -> [String] {
+	private func filterValues(input: String) -> [String] {
 		return values.filter({ currentItem in
 			var _currentItem = currentItem
 			var _input = input
-			if !caseSensitive {
+			if !isCaseSensitive {
 				_currentItem = _currentItem.lowercased()
 				_input = _input.lowercased()
 			}
-			return String(_currentItem.prefix(_input.count)).levenshtein(_input) <= levenshteinDistance
+			return String(_currentItem.prefix(_input.count)).levenshtein(_input) <= maximumLevenshteinDistance
 		})
 	}
 	
@@ -342,51 +243,22 @@ extension AutocompleteController {
 		})
 	}
 	
-	/// Configure the appearance of the container view, based on the given values
-	/// - Parameters:
-	///   - containerView: UIView that has to be configured
-	///   - borderWidth: containerView border width
-	///   - borderColor: containerView border color
-	private func setContainerLayout(
-		_ containerView: UIView,
-		borderWidth: CGFloat,
-		borderColor: UIColor
-	) {
-		containerView.layer.borderWidth = borderWidth
-		containerView.layer.borderColor = borderColor.cgColor
-	}
-	
-	/// Return a CGRect whose measure is calculated so that it is below the given textfield,
-	/// and is high enough to fit all the given row views
-	/// - Parameters:
-	///   - textField: Textfield under which the CGRect has to be
-	///   - rowViews: RowViews that has to be inside the CGRect
-	private func getFrameBasedOnTextField(
-		_ textField: UITextField,
-		andRowViews rowViews: [AutocompleteRowView],
-		separatorHeight: CGFloat
-	) -> CGRect {
+	/// Return a CGRect whose measure is calculated so that it is below the textfield,
+	/// and is high enough to fit all the row views
+	private func getFrameBasedOnTextField() -> CGRect {
 		return CGRect(
-			x: textField.frame.origin.x,
-			y: textField.frame.origin.y + autocompleteTextField.frame.height,
-			width: textField.frame.width,
+			x: autocompleteTextField.frame.origin.x,
+			y: autocompleteTextField.frame.origin.y + autocompleteTextField.frame.height,
+			width: autocompleteTextField.frame.width,
 			height: rowViews.reduce(0) { sum, item in
 				return sum + item.intrinsicContentSize.height
-			} + ((CGFloat(rowViews.count) * separatorHeight) - 1)
+			} + ((CGFloat(rowViews.count) * rowSeparatorHeight) - 1)
 		)
 	}
 	
-	/// Create and return a UIStackView containing all the given rowViews,
-	/// and set it's bounds equal to the given containerView
-	/// - Parameters:
-	///   - rowViews: All the row views that has to be added in the stackView
-	///   - containerView: The containerView whose measure has to be used by the stackView
-	private func createStackWithRowViews(
-		_ rowViews: [AutocompleteRowView],
-		thatFit containerView: UIView,
-		separatorHeight: CGFloat,
-		separatorColor: UIColor
-	) -> UIStackView {
+	/// Create and return a UIStackView containing all the rowViews,
+	/// and set it's bounds equal to the containerView
+	private func createStackWithRowViews() -> UIStackView {
 		let stackView: UIStackView = UIStackView()
 		stackView.axis = .vertical
 		stackView.distribution = .fillProportionally
@@ -397,10 +269,10 @@ extension AutocompleteController {
 						x: item.frame.origin.x,
 						y: item.frame.origin.y,
 						width: containerView.bounds.width,
-						height: separatorHeight
+						height: rowSeparatorHeight
 					)
 				)
-				separator.backgroundColor = separatorColor
+				separator.backgroundColor = rowSeparatorColor
 				stackView.addArrangedSubview(separator)
 			}
 			stackView.addArrangedSubview(item)
