@@ -11,8 +11,8 @@ import UIKit
 // MARK: - Autocomplete controller delegate
 
 public protocol AutocompleteControllerDelegate: class {
-	func autocompleteTextField(_ autocompletable: Autocompletable, didTapIndex index: Int)
 	func autocompleteTextFieldDismissed(_ autocompletable: Autocompletable)
+	func autocompleteTextField(_ autocompletable: Autocompletable, didTapIndex index: Int, textAtIndex text: String)
 }
 
 // MARK: - Autocomplete controller
@@ -84,6 +84,9 @@ public class AutocompleteController {
 	/// Rows currently displayed
 	private var rowViews: [AutocompleteRowView] = []
 	
+	/// Absolute indexes of the current displayed rows
+	private var currentAbsoluteIndexes: [Int] = []
+	
 //	MARK: - Public initializers
 	
 	/// Initializer
@@ -109,8 +112,9 @@ extension AutocompleteController {
 			let textValue = autocompleteTextField.text,
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
-		
-		rowViews = getRowViews(fromValues: Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows)))
+		let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
+		currentAbsoluteIndexes = filteredValues.map({ $0.offset })
+		rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
 		resizeContainer()
 	}
 	
@@ -123,8 +127,9 @@ extension AutocompleteController {
 		else { return }
 		
 		if textValue.count >= minimumAmountOfCharacter {
-			cleanContainer()
-			rowViews = getRowViews(fromValues: Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows)))
+			let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
+			currentAbsoluteIndexes = filteredValues.map({ $0.offset })
+			rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
 			resizeContainer()
 		} else {
 			cleanContainer()
@@ -223,8 +228,8 @@ extension AutocompleteController {
 	///
 	/// - Parameters:
 	///   - input: Text used for the filter
-	private func filterValues(input: String) -> [String] {
-		return values.filter({ currentItem in
+	private func filterValues(input: String) -> [(offset: Int, element: String)] {
+		return values.enumerated().filter({ index, currentItem in
 			var _currentItem = currentItem
 			var _input = input
 			if !isCaseSensitive {
@@ -373,10 +378,11 @@ extension AutocompleteController {
 // MARK: - Autocomplete row view delegate
 
 extension AutocompleteController: AutocompleteRowViewDelegate {
-	func autocompleteRowView(
-		_ autocompleteRowView: AutocompleteRowView,
-		didSelect index: Int
-	) {
-		
+	func autocompleteRowView(_ autocompleteRowView: AutocompleteRowView, didSelect index: Int) {
+		delegate?.autocompleteTextField(
+			autocompleteTextField,
+			didTapIndex: currentAbsoluteIndexes[index],
+			textAtIndex: values[currentAbsoluteIndexes[index]]
+		)
 	}
 }

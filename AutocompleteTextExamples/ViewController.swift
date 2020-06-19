@@ -26,15 +26,15 @@ class ViewController: UIViewController {
 		_autocompleteController.isCaseSensitive = false
 		_autocompleteController.maximumLevenshteinDistance = 1
 		_autocompleteController.minimumAmountOfCharacter = 2
-		_autocompleteController.shadow = Shadow.bottomRight
-		_autocompleteController.cornerRadius = 4
-		_autocompleteController.cornersToRound = [.allCorners]
+		_autocompleteController.shadow = Shadow.full
+		_autocompleteController.cornerRadius = 8
+		_autocompleteController.cornersToRound = [.bottomLeft, .bottomRight]
 	}
 
 }
 
 extension ViewController: AutocompleteControllerDelegate {
-	func autocompleteTextField(_ autocompletable: Autocompletable, didTapIndex index: Int) {
+	func autocompleteTextField(_ autocompletable: Autocompletable, didTapIndex index: Int, textAtIndex text: String) {
 		// TODO
 	}
 	
