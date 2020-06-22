@@ -41,8 +41,7 @@ extension Shadow {
 
 extension Shadow {
 	
-	/// This method calculate and return a shadow based on the case on which
-	/// is called.
+	/// This method calculate and return a shadow based on the case on which is called.
 	/// - Parameters:
 	///   - shadow: Shadow case
 	///   - view: View on which the shadow has to be calculated
@@ -72,7 +71,8 @@ extension Shadow {
 			path.addLine(to: CGPoint(x: x + width, y: y))
 			path.close()
 		default:
-			assertionFailure("Problem in Shadow calculation")
+			assertionFailure("I can't calculate the radius of the given Shadow")
+			return ShadowConfiguration.none
 		}
 		
 		return ShadowConfiguration(

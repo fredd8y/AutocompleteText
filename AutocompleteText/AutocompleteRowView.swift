@@ -1,5 +1,5 @@
 //
-//  WordView.swift
+//  AutocompleteRowView.swift
 //  AutocompleteText
 //
 //  Created by Federico Arvat on 11/06/2020.

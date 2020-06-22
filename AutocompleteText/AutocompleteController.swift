@@ -175,6 +175,12 @@ extension AutocompleteController {
 		autocompleteTextField.superview?.addSubview(containerView)
 	}
 	
+}
+
+// MARK: - Private methods (UI)
+
+extension AutocompleteController {
+	
 	/// This method add a border to the view with width and color set
 	/// - Parameters:
 	///   - stackView: The view on which the border has to be draw
@@ -224,41 +230,6 @@ extension AutocompleteController {
 		autocompleteTextField.superview?.addSubview(shadowView)
 	}
 	
-	/// This function filter the given list based on the given input,
-	/// it return a list of element that contains the input as a prefix.
-	/// The levenshtein distance is a parameter that indicates the tolerance
-	/// that this filter has.
-	/// Examples:
-	/// -	levenshtein distance = 0, "word" != "lord"
-	/// -	levenshtein distance = 1, "word" = "lord"
-	///
-	/// - Parameters:
-	///   - input: Text used for the filter
-	private func filterValues(input: String) -> [(offset: Int, element: String)] {
-		return values.enumerated().filter({ index, currentItem in
-			var _currentItem = currentItem
-			var _input = input
-			if !isCaseSensitive {
-				_currentItem = _currentItem.lowercased()
-				_input = _input.lowercased()
-			}
-			return String(_currentItem.prefix(_input.count)).levenshtein(_input) <= maximumLevenshteinDistance
-		})
-	}
-	
-	/// Return an Array of AutocompleteRowView configured with the given values
-	/// - Parameter values: List of String used to configure the views
-	private func getRowViews(fromValues values: [String]) -> [AutocompleteRowView] {
-		return values.enumerated().map({ index, element in
-			let newRow = AutocompleteRowView()
-			newRow.delegate = self
-			newRow.index = index
-			newRow.backgroundColor = backgroundColor
-			newRow.text = element
-			return newRow
-		})
-	}
-	
 	/// Return a CGRect whose measure is calculated so that it is below the textfield,
 	/// and is high enough to fit all the row views
 	private func getFrameBasedOnTextField() -> CGRect {
@@ -295,6 +266,47 @@ extension AutocompleteController {
 		})
 		stackView.frame = containerView.bounds
 		return stackView
+	}
+	
+}
+
+// MARK: - Private methods (business logic)
+
+extension AutocompleteController {
+	
+	/// This function filter the given list based on the given input,
+	/// it return a list of element that contains the input as a prefix.
+	/// The levenshtein distance is a parameter that indicates the tolerance
+	/// that this filter has.
+	/// Examples:
+	/// -	levenshtein distance = 0, "word" != "lord"
+	/// -	levenshtein distance = 1, "word" = "lord"
+	///
+	/// - Parameters:
+	///   - input: Text used for the filter
+	private func filterValues(input: String) -> [(offset: Int, element: String)] {
+		return values.enumerated().filter({ index, currentItem in
+			var _currentItem = currentItem
+			var _input = input
+			if !isCaseSensitive {
+				_currentItem = _currentItem.lowercased()
+				_input = _input.lowercased()
+			}
+			return String(_currentItem.prefix(_input.count)).levenshtein(_input) <= maximumLevenshteinDistance
+		})
+	}
+	
+	/// Return an Array of AutocompleteRowView configured with the given values
+	/// - Parameter values: List of String used to configure the views
+	private func getRowViews(fromValues values: [String]) -> [AutocompleteRowView] {
+		return values.enumerated().map({ index, element in
+			let newRow = AutocompleteRowView()
+			newRow.delegate = self
+			newRow.index = index
+			newRow.backgroundColor = backgroundColor
+			newRow.text = element
+			return newRow
+		})
 	}
 	
 }
