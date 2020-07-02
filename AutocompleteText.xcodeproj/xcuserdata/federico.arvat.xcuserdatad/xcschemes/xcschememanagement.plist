@@ -7,16 +7,31 @@
 		<key>AutocompleteText.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>AutocompleteTextExamples.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
+		</dict>
+		<key>AutocompleteTextTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>8DA87A3F249257C000148865</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8DA87A48249257C000148865</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8DA87A5D249257F800148865</key>
 		<dict>
 			<key>primary</key>
