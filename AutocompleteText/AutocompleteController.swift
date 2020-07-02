@@ -42,9 +42,7 @@ public class AutocompleteController {
 	public var maximumLevenshteinDistance: Int = 0
 	
 	/// List of words that can be shown
-	public var values: [String] = [] {
-		didSet { values.sort() }
-	}
+	public var values: [String] = []
 	
 	/// Flag that indicates if the match has to be case sensitive or not
 	public var isCaseSensitive: Bool = true
@@ -284,7 +282,7 @@ extension AutocompleteController {
 	///
 	/// - Parameters:
 	///   - input: Text used for the filter
-	private func filterValues(input: String) -> [(offset: Int, element: String)] {
+	func filterValues(input: String) -> [(offset: Int, element: String)] {
 		return values.enumerated().filter({ index, currentItem in
 			var _currentItem = currentItem
 			var _input = input
@@ -298,7 +296,7 @@ extension AutocompleteController {
 	
 	/// Return an Array of AutocompleteRowView configured with the given values
 	/// - Parameter values: List of String used to configure the views
-	private func getRowViews(fromValues values: [String]) -> [AutocompleteRowView] {
+	func getRowViews(fromValues values: [String]) -> [AutocompleteRowView] {
 		return values.enumerated().map({ index, element in
 			let newRow = AutocompleteRowView()
 			newRow.delegate = self
