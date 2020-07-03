@@ -115,9 +115,13 @@ extension AutocompleteController {
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
-		currentAbsoluteIndexes = filteredValues.map({ $0.offset })
-		rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
-		resizeContainer()
+		if filteredValues.count > 0 {
+			currentAbsoluteIndexes = filteredValues.map({ $0.offset })
+			rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
+			resizeContainer()
+		} else {
+			cleanContainer()
+		}
 	}
 	
 	/// Called when the textfield change it's content
@@ -130,9 +134,13 @@ extension AutocompleteController {
 		
 		if textValue.count >= minimumAmountOfCharacter {
 			let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
-			currentAbsoluteIndexes = filteredValues.map({ $0.offset })
-			rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
-			resizeContainer()
+			if filteredValues.count > 0 {
+				currentAbsoluteIndexes = filteredValues.map({ $0.offset })
+				rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
+				resizeContainer()
+			} else {
+				cleanContainer()
+			}
 		} else {
 			cleanContainer()
 		}
