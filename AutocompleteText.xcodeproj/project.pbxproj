@@ -17,6 +17,8 @@
 		8DA87A6D249257F900148865 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DA87A6B249257F900148865 /* LaunchScreen.storyboard */; };
 		8DA87A832492594200148865 /* AutocompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A822492594200148865 /* AutocompleteRowView.swift */; };
 		8DA87A8924928A4200148865 /* Autocompletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA87A8824928A4200148865 /* Autocompletable.swift */; };
+		8DC3522324AE2A07009830AE /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3522124AE2A07009830AE /* TableViewCell.swift */; };
+		8DC3522424AE2A07009830AE /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8DC3522224AE2A07009830AE /* TableViewCell.xib */; };
 		8DC5FE6424A33D9700DCAA85 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC5FE6324A33D9700DCAA85 /* Utils.swift */; };
 		8DC6864F2493661800D1350B /* AutocompleteText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA87A40249257C000148865 /* AutocompleteText.framework */; };
 		8DC686532493B58C00D1350B /* AutocompleteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC686522493B58C00D1350B /* AutocompleteController.swift */; };
@@ -56,6 +58,8 @@
 		8DA87A6E249257F900148865 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DA87A822492594200148865 /* AutocompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteRowView.swift; sourceTree = "<group>"; };
 		8DA87A8824928A4200148865 /* Autocompletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autocompletable.swift; sourceTree = "<group>"; };
+		8DC3522124AE2A07009830AE /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		8DC3522224AE2A07009830AE /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		8DC5FE6324A33D9700DCAA85 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		8DC686522493B58C00D1350B /* AutocompleteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
 		8DC6865A249A5B8900D1350B /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -155,6 +159,8 @@
 				8DA87A69249257F900148865 /* Assets.xcassets */,
 				8DA87A6B249257F900148865 /* LaunchScreen.storyboard */,
 				8DA87A6E249257F900148865 /* Info.plist */,
+				8DC3522124AE2A07009830AE /* TableViewCell.swift */,
+				8DC3522224AE2A07009830AE /* TableViewCell.xib */,
 			);
 			path = AutocompleteTextExamples;
 			sourceTree = "<group>";
@@ -295,6 +301,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DA87A6D249257F900148865 /* LaunchScreen.storyboard in Resources */,
+				8DC3522424AE2A07009830AE /* TableViewCell.xib in Resources */,
 				8DA87A6A249257F900148865 /* Assets.xcassets in Resources */,
 				8DA87A68249257F800148865 /* Main.storyboard in Resources */,
 			);
@@ -334,6 +341,7 @@
 				8DA87A65249257F800148865 /* ViewController.swift in Sources */,
 				8DA87A61249257F800148865 /* AppDelegate.swift in Sources */,
 				8DA87A63249257F800148865 /* SceneDelegate.swift in Sources */,
+				8DC3522324AE2A07009830AE /* TableViewCell.swift in Sources */,
 				8DC68660249ABAA900D1350B /* Utils.swift in Sources */,
 				8DC6866824A0945700D1350B /* AutocompleteTextField.swift in Sources */,
 			);

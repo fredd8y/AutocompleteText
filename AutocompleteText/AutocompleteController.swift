@@ -170,7 +170,9 @@ extension AutocompleteController {
 		containerView.addSubview(stackView)
 		setBorderTo(stackView)
 		setShadowToShadowView()
-		autocompleteTextField.superview?.addSubview(containerView)
+		
+		let topMostViewController: UIViewController? = UIApplication.shared.windows.filter({ $0.isKeyWindow }).first?.rootViewController
+		topMostViewController?.view.addSubview(containerView)
 	}
 	
 }
@@ -225,16 +227,21 @@ extension AutocompleteController {
 		shadowView.layer.shouldRasterize = true
 		containerView.removeFromSuperview()
 		shadowView.addSubview(containerView)
-		autocompleteTextField.superview?.addSubview(shadowView)
+		
+		let topMostViewController: UIViewController? = UIApplication.shared.windows.filter({ $0.isKeyWindow }).first?.rootViewController
+		topMostViewController?.view.addSubview(shadowView)
 	}
 	
 	/// Return a CGRect whose measure is calculated so that it is below the textfield,
 	/// and is high enough to fit all the row views
 	private func getFrameBasedOnTextField() -> CGRect {
+		// Here we convert the frame to match the frame of the view controller
+		// that will contain the accordion
+		let convertedFrame = autocompleteTextField.convert(autocompleteTextField.bounds, to: nil)
 		return CGRect(
-			x: autocompleteTextField.frame.origin.x,
-			y: autocompleteTextField.frame.origin.y + autocompleteTextField.frame.height,
-			width: autocompleteTextField.frame.width,
+			x: convertedFrame.origin.x,
+			y: convertedFrame.origin.y + convertedFrame.height,
+			width: convertedFrame.width,
 			height: rowViews.reduce(0) { sum, item in
 				return sum + item.intrinsicContentSize.height
 			} + ((CGFloat(rowViews.count) * rowSeparatorHeight) - 1)
