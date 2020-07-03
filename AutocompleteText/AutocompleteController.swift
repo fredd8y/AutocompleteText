@@ -77,7 +77,7 @@ public class AutocompleteController {
 //	MARK: - Private properties
 	
 	/// The autocomplete view handled by this controller
-	private var containerView: UIView = UIView()
+	private var containerView: ContainerView = ContainerView()
 	
 	/// The view that hold the shadow
 	private var shadowView: UIView = UIView()
@@ -97,6 +97,7 @@ public class AutocompleteController {
 		self.autocompleteTextField = autocompleteTextField
 		
 		addObserversTo(autocompleteTextField)
+		addDelegates()
 	}
 	
 }
@@ -320,6 +321,11 @@ extension AutocompleteController {
 
 extension AutocompleteController {
 	
+	/// Utils method to add all the delegates that are useful
+	private func addDelegates() {
+		containerView.delegate = self
+	}
+	
 	/// Setup all the listeners to handle all the events emitted by the textField
 	private func addObserversTo(_ textField: UITextField) {
 		addBeginEditingObserverTo(textField, method: { self.autocompleteTextFieldDidBegin() })
@@ -407,5 +413,13 @@ extension AutocompleteController: AutocompleteRowViewDelegate {
 			didTapIndex: currentAbsoluteIndexes[index],
 			textAtIndex: values[currentAbsoluteIndexes[index]]
 		)
+	}
+}
+
+// MARK: - Container view delegate
+
+extension AutocompleteController: ContainerViewDelegate {
+	func containerViewMustDismiss(_ containerView: ContainerView) {
+		cleanContainer()
 	}
 }
