@@ -11,8 +11,9 @@ import UIKit
 // MARK: - Autocomplete controller delegate
 
 public protocol AutocompleteControllerDelegate: class {
-	func autocompleteTextFieldDismissed(_ autocompletable: Autocompletable)
-	func autocompleteTextField(_ autocompletable: Autocompletable, didTapIndex index: Int, textAtIndex text: String)
+	func autocompleteControllerDismissed(_ autocompleteController: AutocompleteController)
+	func autocompleteController(_ autocompleteController: AutocompleteController, didTapIndex index: Int, textAtIndex text: String)
+	func autocompleteController(_ autocompleteController: AutocompleteController, didFindMatch match: Bool)
 }
 
 // MARK: - Autocomplete controller
@@ -118,6 +119,7 @@ extension AutocompleteController {
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
+		delegate?.autocompleteController(self, didFindMatch: filteredValues.count > 0)
 		if filteredValues.count > 0 {
 			currentAbsoluteIndexes = filteredValues.map({ $0.offset })
 			rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
@@ -137,6 +139,7 @@ extension AutocompleteController {
 		
 		if textValue.count >= minimumAmountOfCharacter {
 			let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
+			delegate?.autocompleteController(self, didFindMatch: filteredValues.count > 0)
 			if filteredValues.count > 0 {
 				currentAbsoluteIndexes = filteredValues.map({ $0.offset })
 				rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
@@ -157,7 +160,7 @@ extension AutocompleteController {
 		else { return }
 		
 		cleanContainer()
-		delegate?.autocompleteTextFieldDismissed(autocompleteTextField)
+		delegate?.autocompleteControllerDismissed(self)
 	}
 	
 }
@@ -420,8 +423,8 @@ extension AutocompleteController {
 
 extension AutocompleteController: AutocompleteRowViewDelegate {
 	func autocompleteRowView(_ autocompleteRowView: AutocompleteRowView, didSelect index: Int) {
-		delegate?.autocompleteTextField(
-			autocompleteTextField,
+		delegate?.autocompleteController(
+			self,
 			didTapIndex: currentAbsoluteIndexes[index],
 			textAtIndex: values[currentAbsoluteIndexes[index]]
 		)
