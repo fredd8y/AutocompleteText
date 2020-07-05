@@ -45,7 +45,7 @@ public class AutocompleteController {
 	public var values: [String] = []
 	
 	/// Flag that indicates if the match has to be case sensitive or not
-	public var isCaseSensitive: Bool = true
+	public var isCaseSensitive: Bool = false
 	
 	/// Corner radius of the container view
 	public var cornerRadius: CGFloat = 0
