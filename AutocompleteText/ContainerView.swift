@@ -19,7 +19,7 @@ class ContainerView: UIView {
 	weak var delegate: ContainerViewDelegate?
 	
 	override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-		if !self.frame.contains(point) {
+		if !self.bounds.contains(point) {
 			delegate?.containerViewMustDismiss(self)
 		}
 		return super.hitTest(point, with: event)
