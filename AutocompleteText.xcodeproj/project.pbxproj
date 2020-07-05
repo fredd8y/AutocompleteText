@@ -21,6 +21,7 @@
 		8DC3522424AE2A07009830AE /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8DC3522224AE2A07009830AE /* TableViewCell.xib */; };
 		8DC3522624AF331B009830AE /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3522524AF331B009830AE /* ContainerView.swift */; };
 		8DC3522824B20C96009830AE /* ExampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3522724B20C96009830AE /* ExampleData.swift */; };
+		8DC3522A24B20E0D009830AE /* AutocompleteControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC3522924B20E0D009830AE /* AutocompleteControllerDelegate.swift */; };
 		8DC5FE6424A33D9700DCAA85 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC5FE6324A33D9700DCAA85 /* Utils.swift */; };
 		8DC6864F2493661800D1350B /* AutocompleteText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA87A40249257C000148865 /* AutocompleteText.framework */; };
 		8DC686532493B58C00D1350B /* AutocompleteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC686522493B58C00D1350B /* AutocompleteController.swift */; };
@@ -64,6 +65,7 @@
 		8DC3522224AE2A07009830AE /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		8DC3522524AF331B009830AE /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		8DC3522724B20C96009830AE /* ExampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleData.swift; sourceTree = "<group>"; };
+		8DC3522924B20E0D009830AE /* AutocompleteControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteControllerDelegate.swift; sourceTree = "<group>"; };
 		8DC5FE6324A33D9700DCAA85 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		8DC686522493B58C00D1350B /* AutocompleteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteController.swift; sourceTree = "<group>"; };
 		8DC6865A249A5B8900D1350B /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				8DC68661249B97D300D1350B /* ShadowConfiguration.swift */,
 				8DC6865A249A5B8900D1350B /* String.swift */,
 				8DC3522524AF331B009830AE /* ContainerView.swift */,
+				8DC3522924B20E0D009830AE /* AutocompleteControllerDelegate.swift */,
 			);
 			path = AutocompleteText;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				8DC68662249B97D300D1350B /* ShadowConfiguration.swift in Sources */,
 				8DC686532493B58C00D1350B /* AutocompleteController.swift in Sources */,
 				8DC3522624AF331B009830AE /* ContainerView.swift in Sources */,
+				8DC3522A24B20E0D009830AE /* AutocompleteControllerDelegate.swift in Sources */,
 				8DC6865D249AB5A400D1350B /* SeparatorView.swift in Sources */,
 				8DA87A8924928A4200148865 /* Autocompletable.swift in Sources */,
 				8DA87A832492594200148865 /* AutocompleteRowView.swift in Sources */,

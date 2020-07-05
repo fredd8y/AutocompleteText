@@ -36,16 +36,4 @@ extension TableViewCell: AutocompleteControllerDelegate {
 	func autocompleteControllerShouldAutocomplete(_ autocompleteController: AutocompleteController) -> Bool {
 		return true
 	}
-	
-	func autocompleteControllerDismissed(_ autocompleteController: AutocompleteController) {
-		// TODO
-	}
-	
-	func autocompleteController(_ autocompleteController: AutocompleteController, didTapIndex index: Int, textAtIndex text: String) {
-		// TODO
-	}
-	
-	func autocompleteController(_ autocompleteController: AutocompleteController, didFindMatch match: Bool) {
-		// TODO
-	}
 }
