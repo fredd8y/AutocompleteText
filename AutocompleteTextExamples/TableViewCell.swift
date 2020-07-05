@@ -36,6 +36,10 @@ class TableViewCell: UITableViewCell {
 }
 
 extension TableViewCell: AutocompleteControllerDelegate {
+	func autocompleteControllerShouldAutocomplete(_ autocompleteController: AutocompleteController) -> Bool {
+		return true
+	}
+	
 	func autocompleteControllerDismissed(_ autocompleteController: AutocompleteController) {
 		// TODO
 	}
