@@ -22,14 +22,15 @@ class TableViewCell: UITableViewCell {
 		guard let _autocompleteController = self.autocompleteController else { return }
 		_autocompleteController.delegate = self
 		_autocompleteController.values = (0..<100).map({ _ in
-			return Utils.randomString(range: 4..<10)
-		})
-		_autocompleteController.isCaseSensitive = false
-		_autocompleteController.maximumLevenshteinDistance = 1
-		_autocompleteController.minimumAmountOfCharacter = 2
-		_autocompleteController.shadow = Shadow.bottomRight
-		_autocompleteController.cornerRadius = 8
-		_autocompleteController.cornersToRound = [.bottomLeft, .bottomRight]
+			return Utils.randomString(range: 80..<100)
+		}).sorted()
+//		_autocompleteController.font = UIFont.systemFont(ofSize: 25)
+//		_autocompleteController.isCaseSensitive = false
+//		_autocompleteController.maximumLevenshteinDistance = 1
+//		_autocompleteController.minimumAmountOfCharacter = 2
+//		_autocompleteController.shadow = Shadow.bottomRight
+//		_autocompleteController.cornerRadius = 8
+//		_autocompleteController.cornersToRound = [.bottomLeft, .bottomRight]
     }
     
 }

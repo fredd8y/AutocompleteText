@@ -74,6 +74,9 @@ public class AutocompleteController {
 	/// Background color of the hint rows
 	public var backgroundColor: UIColor = UIColor.white
 	
+	/// Rows font
+	public var font: UIFont = UIFont.systemFont(ofSize: UIFont.systemFontSize)
+	
 //	MARK: - Private properties
 	
 	/// The autocomplete view handled by this controller
@@ -317,6 +320,7 @@ extension AutocompleteController {
 			let newRow = AutocompleteRowView()
 			newRow.delegate = self
 			newRow.index = index
+			newRow.font = font
 			newRow.backgroundColor = backgroundColor
 			newRow.text = element
 			return newRow

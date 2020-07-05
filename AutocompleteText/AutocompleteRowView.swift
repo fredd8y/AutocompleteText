@@ -51,6 +51,12 @@ class AutocompleteRowView: UIView {
 	/// Row index, this index is used to track where the user has tapped
 	var index: Int!
 	
+	/// Rows font
+	var font: UIFont {
+		set { label.font = newValue }
+		get { return label.font }
+	}
+	
 //	MARK: - Public initializers
 	
 	override init(frame: CGRect) {
