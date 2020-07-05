@@ -9,25 +9,52 @@
 import UIKit
 import AutocompleteText
 
+// MARK: - Table view cell
+
 class TableViewCell: UITableViewCell {
 
+	@IBOutlet weak var label: UILabel!
 	@IBOutlet weak var autocompleteTextField: AutocompleteTextField!
 	
 	private var autocompleteController: AutocompleteController?
 	
-    override func awakeFromNib() {
-        super.awakeFromNib()
+	private var title: String!
+	private var maximumLevenshteinDistance: Int!
+	private var minAmountOfCharacter: Int!
+	private var shadow: Shadow!
+	private var cornerRadius: CGFloat!
+	private var cornersToRound: UIRectCorner!
+	
+	func config(
+		title: String,
+		maximumLevenshteinDistance: Int,
+		minAmountOfCharacter: Int,
+		shadow: Shadow,
+		cornerRadius: CGFloat,
+		cornersToRound: UIRectCorner
+	) {
+		self.maximumLevenshteinDistance = maximumLevenshteinDistance
+		self.minAmountOfCharacter = minAmountOfCharacter
+		self.shadow = shadow
+		self.cornerRadius = cornerRadius
+		self.cornersToRound = cornersToRound
+		
+		label.text = title
 		
 		autocompleteController = AutocompleteController(autocompleteTextField: autocompleteTextField)
 		guard let _autocompleteController = self.autocompleteController else { return }
+		
 		_autocompleteController.delegate = self
 		_autocompleteController.values = ExampleData.superheroes.sorted()
-		_autocompleteController.isCaseSensitive = false
-		_autocompleteController.maximumLevenshteinDistance = 1
-		_autocompleteController.minimumAmountOfCharacter = 2
-		_autocompleteController.shadow = Shadow.bottomRight
-		_autocompleteController.cornerRadius = 8
-		_autocompleteController.cornersToRound = [.bottomLeft, .bottomRight]
+		_autocompleteController.maximumLevenshteinDistance = maximumLevenshteinDistance
+		_autocompleteController.minimumAmountOfCharacter = minAmountOfCharacter
+		_autocompleteController.shadow = shadow
+		_autocompleteController.cornerRadius = cornerRadius
+		_autocompleteController.cornersToRound = cornersToRound
+	}
+	
+    override func awakeFromNib() {
+        super.awakeFromNib()
     }
     
 }

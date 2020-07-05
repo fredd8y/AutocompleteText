@@ -158,18 +158,18 @@
 		8DA87A5F249257F800148865 /* AutocompleteTextExamples */ = {
 			isa = PBXGroup;
 			children = (
-				8DC6865E249ABA2100D1350B /* Utils.swift */,
 				8DA87A60249257F800148865 /* AppDelegate.swift */,
-				8DA87A62249257F800148865 /* SceneDelegate.swift */,
-				8DA87A64249257F800148865 /* ViewController.swift */,
-				8DC6866724A0945600D1350B /* AutocompleteTextField.swift */,
-				8DA87A66249257F800148865 /* Main.storyboard */,
 				8DA87A69249257F900148865 /* Assets.xcassets */,
-				8DA87A6B249257F900148865 /* LaunchScreen.storyboard */,
+				8DC6866724A0945600D1350B /* AutocompleteTextField.swift */,
+				8DC3522724B20C96009830AE /* ExampleData.swift */,
 				8DA87A6E249257F900148865 /* Info.plist */,
+				8DA87A6B249257F900148865 /* LaunchScreen.storyboard */,
+				8DA87A66249257F800148865 /* Main.storyboard */,
+				8DA87A62249257F800148865 /* SceneDelegate.swift */,
 				8DC3522124AE2A07009830AE /* TableViewCell.swift */,
 				8DC3522224AE2A07009830AE /* TableViewCell.xib */,
-				8DC3522724B20C96009830AE /* ExampleData.swift */,
+				8DC6865E249ABA2100D1350B /* Utils.swift */,
+				8DA87A64249257F800148865 /* ViewController.swift */,
 			);
 			path = AutocompleteTextExamples;
 			sourceTree = "<group>";
