@@ -45,9 +45,6 @@ public class AutocompleteController {
 	/// The textfield handled by the controller
 	public var autocompleteTextField: Autocompletable
 	
-	/// A boolean value indicating whether the autocomplete is enabled or not
-	public var autocompleteEnabled: Bool = true
-	
 	/// Minimum amount of character required to trigger the autocompletion
 	public var minimumAmountOfCharacter: Int = 2
 	
@@ -130,13 +127,13 @@ extension AutocompleteController {
 	/// Called when the textfield gain focus
 	private func autocompleteTextFieldDidBegin() {
 		guard
-			delegate != nil,
-			autocompleteEnabled,
+			let _delegate = delegate,
+			_delegate.autocompleteControllerShouldAutocomplete(self),
 			let textValue = autocompleteTextField.text,
 			textValue.count >= minimumAmountOfCharacter
 		else { return }
 		let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
-		delegate?.autocompleteController(self, didFindMatch: filteredValues.count > 0)
+		_delegate.autocompleteController(self, didFindMatch: filteredValues.count > 0)
 		if filteredValues.count > 0 {
 			currentAbsoluteIndexes = filteredValues.map({ $0.offset })
 			rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
@@ -149,14 +146,14 @@ extension AutocompleteController {
 	/// Called when the textfield change it's content
 	private func autocompleteTextFieldDidChange() {
 		guard
-			delegate != nil,
-			autocompleteEnabled,
+			let _delegate = delegate,
+			_delegate.autocompleteControllerShouldAutocomplete(self),
 			let textValue = autocompleteTextField.text
 		else { return }
 		
 		if textValue.count >= minimumAmountOfCharacter {
 			let filteredValues: [(offset: Int, element: String)] = Array(filterValues(input: textValue).prefix(maximumAmountOfDisplayableRows))
-			delegate?.autocompleteController(self, didFindMatch: filteredValues.count > 0)
+			_delegate.autocompleteController(self, didFindMatch: filteredValues.count > 0)
 			if filteredValues.count > 0 {
 				currentAbsoluteIndexes = filteredValues.map({ $0.offset })
 				rowViews = getRowViews(fromValues: filteredValues.map({ $0.element }))
@@ -171,11 +168,6 @@ extension AutocompleteController {
 	
 	/// Called when the textfield lose focus
 	private func autocompleteTextFieldDidEnd() {
-		guard
-			delegate != nil,
-			autocompleteEnabled
-		else { return }
-		
 		cleanContainer()
 		delegate?.autocompleteControllerDismissed(self)
 	}
