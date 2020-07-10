@@ -81,6 +81,32 @@ public class AutocompleteController {
 	/// Absolute indexes of the current displayed rows
 	private var currentAbsoluteIndexes: [Int] = []
 	
+	/// The topmost view controller of current window, if exists
+	private lazy var topMostViewController: UIViewController? = {
+		return UIApplication.shared.windows.filter({ $0.isKeyWindow }).first?.rootViewController
+	}()
+	
+	/// The nearest scrollView that contains the autocompleteTextField, if exists
+	private lazy var nearestScrollView: UIScrollView? = {
+		var superScrollView: UIScrollView? = nil
+		
+		var superview: UIView? = autocompleteTextField.superview
+		while superview != nil {
+			if let scrollView = superview as? UIScrollView {
+				superScrollView = scrollView
+				break
+			}
+			superview = superview?.superview
+		}
+		
+		return superScrollView
+	}()
+	
+	/// Computed properties that returns the wiew that will contain our autocompleteTextField
+	private var viewThatWillContainDropdown: UIView? {
+		return nearestScrollView ?? topMostViewController?.view
+	}
+	
 //	MARK: - Public initializers
 	
 	/// Initializer
@@ -169,9 +195,8 @@ extension AutocompleteController {
 		containerView.addSubview(stackView)
 		setBorderTo(stackView)
 		setShadowToShadowView()
-		
-		let topMostViewController: UIViewController? = UIApplication.shared.windows.filter({ $0.isKeyWindow }).first?.rootViewController
-		topMostViewController?.view.addSubview(containerView)
+				
+		viewThatWillContainDropdown?.addSubview(containerView)
 	}
 	
 }
@@ -227,8 +252,7 @@ extension AutocompleteController {
 		containerView.removeFromSuperview()
 		shadowView.addSubview(containerView)
 		
-		let topMostViewController: UIViewController? = UIApplication.shared.windows.filter({ $0.isKeyWindow }).first?.rootViewController
-		topMostViewController?.view.addSubview(shadowView)
+		viewThatWillContainDropdown?.addSubview(shadowView)
 	}
 	
 	/// Return a CGRect whose measure is calculated so that it is below the textfield,
@@ -236,7 +260,8 @@ extension AutocompleteController {
 	private func getFrameBasedOnTextField() -> CGRect {
 		// Here we convert the frame to match the frame of the view controller
 		// that will contain the accordion
-		let convertedFrame = autocompleteTextField.convert(autocompleteTextField.bounds, to: nil)
+				
+		let convertedFrame = autocompleteTextField.convert(autocompleteTextField.bounds, to: viewThatWillContainDropdown)
 		return CGRect(
 			x: convertedFrame.origin.x,
 			y: convertedFrame.origin.y + convertedFrame.height,
