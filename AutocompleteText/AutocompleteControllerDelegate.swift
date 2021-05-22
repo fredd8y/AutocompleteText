@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Autocomplete controller delegate
 
-public protocol AutocompleteControllerDelegate: class {
+public protocol AutocompleteControllerDelegate: AnyObject {
 	/// Called when the textField has lost focus and the dropdown has been dismissed
 	/// - Parameter autocompleteController: Autocomplete Controller that handle the textField
 	func autocompleteControllerDismissed(_ autocompleteController: AutocompleteController)

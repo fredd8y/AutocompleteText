@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Autocomplete row view delegate
 
-protocol AutocompleteRowViewDelegate: class {
+protocol AutocompleteRowViewDelegate: AnyObject {
 	func autocompleteRowView(_ autocompleteRowView: AutocompleteRowView, didSelect index: Int)
 }
 

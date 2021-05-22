@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ContainerViewDelegate: class {
+protocol ContainerViewDelegate: AnyObject {
 	func containerViewMustDismiss(_ containerView: ContainerView)
 }
 
